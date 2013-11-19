@@ -1,0 +1,173 @@
+/************************************************
+ * Arduino code that handles communication with
+ * all sensors, servos and motors.
+ * 
+ * TUM - SS 2013 - Hardware/Software Co-Design 
+ * Lab Course (Supervisor: Kai Huang)
+ * 
+ * AUTHORS: Sebastian Fischer, Hannes Schulz, 
+ *          Lars Kipferl, Yanis Chiotellis
+ ***********************************************/ 
+
+
+#include <ros.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Int32.h>
+#include <ServoLego.h>
+#include <Servo.h>
+#include <SharpIR.h>
+
+// ros related variables
+// nodehandler takes care of all the sending and receiving
+ros::NodeHandle nh;
+// we are sending integer messages
+std_msgs::Int32 angle_msg;
+std_msgs::Int32 frontDist_msg;
+std_msgs::Int32 backDist_msg;
+// define publishers that publish the distance values with the topic "radar"
+ros::Publisher angle_pub("radar_angle", &angle_msg);
+ros::Publisher frontDist_pub("radar_front", &frontDist_msg);
+ros::Publisher backDist_pub("radar_back", &backDist_msg);
+
+Servo pmlServo;            // Servo for our "laser radar"
+ServoLego steerServo;      // Lego Servo for steering
+const int motorIN1 = 2;    // H-bridge leg 1 (pin IN1, dir1 PinA)
+const int motorIN2 = 3;    // H-bridge leg 2 (pin IN2, dir2 PinA)
+const int speedMotorA = 9;      //  H-bridge EN_A
+int angle;         // Fetch data from "laser radar" for ros_msg to publish
+int frontDist;
+int backDist;
+
+// Create an instance of SharpIR, constructor is SharpIR(type, analog_pin)
+SharpIR backIR = SharpIR(GP2Y0A02YK,0); // back
+SharpIR frontIR = SharpIR(GP2Y0A02YK,1); // front
+
+/***************************************************
+ * this method sets the steering.
+ * 0 - no steering
+ * 1 - left
+ * 2 - right
+ **************************************************/
+void steer(int i) {
+  if(i == 1)
+    steerServo.left();
+  else if(i == 2)
+    steerServo.right();
+  else
+    steerServo.none();
+}
+
+/*****************************************************************
+ * set the direction of the motor movement over the H-bridge
+ * 0 - no driving
+ * 1 - forward
+ * 2 - backward
+ ****************************************************************/
+void drive(int i) {
+  if(i == 2) {
+    digitalWrite(motorIN1, LOW);
+    digitalWrite(motorIN2, HIGH);
+  }
+  else if(i == 1) {
+    digitalWrite(motorIN1, HIGH);
+    digitalWrite(motorIN2, LOW);
+  } 
+  else {
+    digitalWrite(motorIN1, LOW);
+    digitalWrite(motorIN2, LOW);
+  }
+}
+
+/************************************************************
+ * callback functions for the messages we have subscribed
+ * this method is calld from nh.spinOnce()
+ ***********************************************************/
+// callback functions for subscribers
+int drive_value;
+void driveCallback(const std_msgs::Int32& drive_msg) {
+ drive_value = drive_msg.data;
+ drive(drive_value); 
+}
+
+int steer_value;
+void steerCallback(const std_msgs::Int32& steer_msg) {
+  steer_value = steer_msg.data;
+  steer(steer_value);
+}
+
+// now we can instantiate our subscribers
+ros::Subscriber<std_msgs::Int32> drive_sub("directions_drive", &driveCallback);
+ros::Subscriber<std_msgs::Int32> steer_sub("directions_steer", &steerCallback);
+
+
+void setup(){
+  //Serial.begin(57600);
+  steerServo.attach(7,8);
+  pmlServo.attach(12);
+  // Motor A
+  pinMode(motorIN1, OUTPUT); 
+  pinMode(motorIN2, OUTPUT); 
+  pinMode(speedMotorA, OUTPUT);
+  // set motor to full speed
+  digitalWrite(speedMotorA, HIGH);
+  // initialise the nodehandler and 
+  nh.initNode();
+  // advertise our messages
+  nh.advertise(angle_pub);
+  nh.advertise(frontDist_pub);
+  nh.advertise(backDist_pub);
+  // subscribe to directions topic
+  nh.subscribe(drive_sub);
+  nh.subscribe(steer_sub);
+}
+
+/**************************************************************
+ * This method is used to get the next step of our radar.
+ * The Radar turns in steps of 10 degrees.
+ * If 180 degrees are reached we jump back to 0 degrees.
+ *************************************************************/
+// store the current position
+int currentPos = 0;
+
+void sensorNext(){
+  if( currentPos < 180 )  {
+    currentPos+=10;  
+  } 
+  else {
+    currentPos = 0;
+  }
+  pmlServo.write(currentPos);
+  
+  // prepare data and write to message
+  angle = currentPos;
+  frontDist = frontIR.getData();
+  backDist = backIR.getData();
+}
+
+
+void loop(){
+  // let our radar trun
+  sensorNext();
+  // get message for publisher
+  angle_msg.data = angle;
+  frontDist_msg.data = frontDist;
+  backDist_msg.data = backDist;
+  //Serial.println(angle_msg.data);
+  Serial.println(frontDist_msg.data);
+  //Serial.println(backDist_msg.data);
+  // now publish the data
+  angle_pub.publish(&angle_msg);
+  frontDist_pub.publish(&frontDist_msg);
+  backDist_pub.publish(&backDist_msg);
+  // this handles all the communication callbacks
+  nh.spinOnce();
+  // we hae nothing to do for the subscriber because
+  // the defined callback is called from the nh.spinOnce()
+  //wait 200ms
+  delay(200);
+}
+
+
+
+
+

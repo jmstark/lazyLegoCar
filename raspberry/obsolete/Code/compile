@@ -1,0 +1,1 @@
+g++ -I /opt/ros/fuerte/include/ -L /opt/ros/fuerte/lib/ -lactionlib -lcpp_common -lmessage_filters -lrosbag -lroscpp -lrospack -lrxtools -lsensor_msgs -ltopic_tools -lxmlrpcpp -lroslib -lrosconsole -lrostime -lroscpp_serialization potentialfield.cpp
