@@ -17,20 +17,22 @@
 #define RIGHT 2
 #define STEP_DEGREES 10
 #define NUM_STEPS (180/STEP_DEGREES)
+#define CRIT_RANGE 5
+#define FRONT_VAL NUM_STEPS/2
 
 
 byte frontDist[NUM_STEPS+1];
 byte backDist[NUM_STEPS+1];
 float distance2;
 float distance1;
+bool isSteering=false;
+bool obstacle=false;
 
-byte increment=1;
-byte stepCnt=0;
-//SharpIR front = SharpIR(GP2Y0A2YK,0);
-//SharpIR back = SharpIR(GP2Y0A2YK,1);
+int increment=1;
+byte stepCnt=FRONT_VAL;
+
 
 Servo s;
-//DistanceGP2Y0A21YK Dist;
 int inc=1;
 
 void drive(int dir);
@@ -51,39 +53,68 @@ void setup()                    // run once, when the sketch starts
   pinMode(MOTOR_II, OUTPUT);
   pinMode(SPEED_MOTOR_A, OUTPUT);
   digitalWrite(SPEED_MOTOR_A, HIGH); ///
-  drive(DIR_FWD);
+  steer(RIGHT);
+  delay(1000);
+  steer(STRAIGHT);
+  //drive(DIR_FWD);
+  
 }
 
-void laserSteering(){
-  s.write(stepCnt*STEP_DEGREES);
-  stepCnt += increment;
-  if(stepCnt > NUM_STEPS-1 || stepCnt<=0){
+void laser()
+{
+  frontDist[stepCnt]=getFrontDist();
+  backDist[stepCnt]=getBackDist();
+  
+  if(stepCnt > NUM_STEPS -1 || stepCnt<=0)
+  {
     increment=-increment;
-  for(byte i=0;i<NUM_STEPS+1;i++)
-    {
-    Serial.print(frontDist[i]);
-    Serial.print(' ');
-    }
-  Serial.println();
+    //stepCnt=0;
+    
+    
+    Serial.print(stepCnt);
+    Serial.print('\t');
+    for(byte i=0;i<NUM_STEPS+1;i++)
+      {
+        Serial.print(frontDist[i]>90?90:frontDist[i]);
+        Serial.print(' ');
+      }
+    Serial.println();
+    
     
     
   }
-/*  for(byte i=0;i<NUM_STEPS+1;i++)
-    {
-    Serial.print(frontDist[i]);
-    Serial.print(' ');
-    }
-  Serial.println();*/
+  /*
+      Serial.print(stepCnt);
+    Serial.print('\t');
+    for(byte i=0;i<NUM_STEPS+1;i++)
+      {
+        Serial.print(frontDist[i]>90?90:frontDist[i]);
+        Serial.print(' ');
+      }
+    Serial.println();
+*/
+  
+  stepCnt+=increment;
+  s.write(stepCnt*STEP_DEGREES);
 }
 
-void laserData(){
-  float volts1 = analogRead(LASER_SENSOR_R)*5.0/1024.0;
+
+byte getFrontDist()
+{
   float volts2 = analogRead(LASER_SENSOR_B)*5.0/1024.0;
-  distance1 = 65.0 * pow(volts1, -1.10);
   distance2 = 65.0 * pow(volts2, -1.10);
-  frontDist[stepCnt]=distance2;
-  backDist[stepCnt]=distance1;
+  return distance2;
 }
+
+byte getBackDist()
+{
+  float volts1 = analogRead(LASER_SENSOR_B)*5.0/1024.0;
+  distance1 = 65.0 * pow(volts1, -1.10);
+  return distance1;  
+  
+}
+
+
 
 void drive(int dir){
   if(dir == DIR_STOP){
@@ -100,19 +131,50 @@ void drive(int dir){
   }
 }
 
+void steer(byte dir){
+ switch(dir){
+  case STRAIGHT:
+     digitalWrite(MOTORS_I, LOW);
+     digitalWrite(MOTORS_II, LOW);
+     break;
+   case RIGHT:
+     digitalWrite(MOTORS_I, LOW);
+     digitalWrite(MOTORS_II, HIGH);
+     break;
+   case LEFT:
+     digitalWrite(MOTORS_I, HIGH);
+     digitalWrite(MOTORS_II, LOW);
+     break;
+   default: break;
+ } 
+}
+
+
 void loop()                       // run over and over again
 {
-  laserData();
-  laserSteering();
-
-  
-  //Serial.print("Blue Sensor\t"); 
-  //Serial.println(distance2);
-  //Serial.print("Red Sensor\t");
-  //Serial.println(distance1);
-  //if(distance2 < 30)
-  //  drive(STOP);
-  //if(distance2 > 29) 
-  //  drive(1)
-  delay(500); 
+  laser();
+  //Serial.println(getFrontDist());  
+/*  obstacle=false;
+  for(int i=FRONT_VAL-CRIT_RANGE/2;i<FRONT_VAL+CRIT_RANGE/2;i++)
+  {
+    if(frontDist[i]<50)
+    {
+      obstacle=true;
+      if(!isSteering)
+      {
+        isSteering=true;
+        steer(LEFT);
+      }
+    }
+  }
+  if(!obstacle)
+  {  
+    if(isSteering)
+    {
+      steer(STRAIGHT);
+      isSteering=false;
+    }
+  }
+*/
+  delay(250); 
 }
