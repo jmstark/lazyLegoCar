@@ -15,31 +15,32 @@
 #define STRAIGHT 0
 #define LEFT 1
 #define RIGHT 2
+#define RANGE_IN_STEPS 5
 #define STEP_DEGREES 10
+#define STEP_OFFSET (90-(RANGE_IN_STEPS*STEP_DEGREES)/2)
 #define NUM_STEPS (180/STEP_DEGREES)
 #define CRIT_RANGE 5
-#define FRONT_VAL NUM_STEPS/2
+#define FRONT_VAL (NUM_STEPS/2)
 
 
-byte frontDist[NUM_STEPS+1];
-byte backDist[NUM_STEPS+1];
+byte frontDist[RANGE_IN_STEPS];
+byte backDist[RANGE_IN_STEPS];
 float distance2;
 float distance1;
 bool isSteering=false;
 bool obstacle=false;
 
-int increment=1;
-byte stepCnt=FRONT_VAL;
+byte stepCnt=0;
 
 
 Servo s;
-int inc=1;
+int inc=-1;//gets inverted on first run
 
 void drive(int dir);
 
 void setup()                    // run once, when the sketch starts
 {
-  for(int i=0;i<NUM_STEPS+1;i++)
+  for(int i=0;i<RANGE_IN_STEPS;i++)
   {
     frontDist[i]=255;
     backDist[i]=255;
@@ -48,7 +49,7 @@ void setup()                    // run once, when the sketch starts
   s.attach(LASER_STEERING);
   //Dist.begin(A1);
   Serial.println("Hello world!");
-  s.write(90);
+  s.write(stepCnt*STEP_DEGREES);
   pinMode(MOTOR_I, OUTPUT);
   pinMode(MOTOR_II, OUTPUT);
   pinMode(SPEED_MOTOR_A, OUTPUT);
@@ -59,6 +60,20 @@ void setup()                    // run once, when the sketch starts
   //drive(DIR_FWD);
   
 }
+
+
+void laser()
+{
+  frontDist[stepCnt]=getFrontDist();
+  backDist[stepCnt]=getBackDist();
+  if(stepCnt == RANGE_IN_STEPS -1 | stepCnt==0)
+  {
+    inc=-inc;
+  }
+  stepCnt+=inc;
+  s.write(stepCnt*STEP_DEGREES);
+}
+
 
 void laser()
 {
