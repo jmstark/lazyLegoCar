@@ -1,5 +1,6 @@
 #include <Servo.h>
 
+#define DEBUG
 
 #define LASER_STEERING 12
 #define MOTORS_I 7    //Digital-Steering
@@ -17,10 +18,11 @@
 #define RIGHT 2
 #define RANGE_IN_STEPS 5
 #define STEP_DEGREES 10
-#define STEP_OFFSET (90-(RANGE_IN_STEPS*STEP_DEGREES)/2)
+#define STEP_OFFSET (90-((RANGE_IN_STEPS-1)*STEP_DEGREES)/2)
 #define NUM_STEPS (180/STEP_DEGREES)
 #define CRIT_RANGE 5
 #define FRONT_VAL (NUM_STEPS/2)
+#define LOOP_DELAY 250
 
 
 byte frontDist[RANGE_IN_STEPS];
@@ -49,7 +51,7 @@ void setup()                    // run once, when the sketch starts
   s.attach(LASER_STEERING);
   //Dist.begin(A1);
   Serial.println("Hello world!");
-  s.write(stepCnt*STEP_DEGREES);
+  s.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
   pinMode(MOTOR_I, OUTPUT);
   pinMode(MOTOR_II, OUTPUT);
   pinMode(SPEED_MOTOR_A, OUTPUT);
@@ -57,6 +59,7 @@ void setup()                    // run once, when the sketch starts
   steer(RIGHT);
   delay(1000);
   steer(STRAIGHT);
+  delay(1000);
   //drive(DIR_FWD);
   
 }
@@ -69,50 +72,24 @@ void laser()
   if(stepCnt == RANGE_IN_STEPS -1 | stepCnt==0)
   {
     inc=-inc;
+    
+    #ifdef DEBUG
+    
+        Serial.print(stepCnt);
+    Serial.print("\t\t");
+    for(byte i=0;i<RANGE_IN_STEPS;i++)
+      {
+        Serial.print(frontDist[i]);
+        Serial.print('\t');
+      }
+    Serial.println();
+    
+    #endif
+    
   }
   stepCnt+=inc;
-  s.write(stepCnt*STEP_DEGREES);
+  s.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
 }
-
-
-void laser()
-{
-  frontDist[stepCnt]=getFrontDist();
-  backDist[stepCnt]=getBackDist();
-  
-  if(stepCnt > NUM_STEPS -1 || stepCnt<=0)
-  {
-    increment=-increment;
-    //stepCnt=0;
-    
-    
-    Serial.print(stepCnt);
-    Serial.print('\t');
-    for(byte i=0;i<NUM_STEPS+1;i++)
-      {
-        Serial.print(frontDist[i]>90?90:frontDist[i]);
-        Serial.print(' ');
-      }
-    Serial.println();
-    
-    
-    
-  }
-  /*
-      Serial.print(stepCnt);
-    Serial.print('\t');
-    for(byte i=0;i<NUM_STEPS+1;i++)
-      {
-        Serial.print(frontDist[i]>90?90:frontDist[i]);
-        Serial.print(' ');
-      }
-    Serial.println();
-*/
-  
-  stepCnt+=increment;
-  s.write(stepCnt*STEP_DEGREES);
-}
-
 
 byte getFrontDist()
 {
@@ -123,7 +100,7 @@ byte getFrontDist()
 
 byte getBackDist()
 {
-  float volts1 = analogRead(LASER_SENSOR_B)*5.0/1024.0;
+  float volts1 = analogRead(LASER_SENSOR_R)*5.0/1024.0;
   distance1 = 65.0 * pow(volts1, -1.10);
   return distance1;  
   
@@ -191,5 +168,5 @@ void loop()                       // run over and over again
     }
   }
 */
-  delay(250); 
+  delay(LOOP_DELAY); 
 }
