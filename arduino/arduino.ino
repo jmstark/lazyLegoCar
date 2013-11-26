@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <SharpIR.h>
 
 #define DEBUG
 
