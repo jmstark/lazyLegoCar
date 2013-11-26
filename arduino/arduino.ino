@@ -23,18 +23,20 @@
 #define NUM_STEPS (180/STEP_DEGREES)
 #define CRIT_RANGE 5
 #define FRONT_VAL (NUM_STEPS/2)
-#define LOOP_DELAY 250
+#define LOOP_DELAY 125
 
 
-byte frontDist[RANGE_IN_STEPS];
-byte backDist[RANGE_IN_STEPS];
+int frontDist[RANGE_IN_STEPS];
+int backDist[RANGE_IN_STEPS];
 float distance2;
 float distance1;
 bool isSteering=false;
 bool obstacle=false;
+bool stop=false;
 
 byte stepCnt=0;
-
+SharpIR backIR = SharpIR(GP2Y0A02YK,0);
+SharpIR frontIR = SharpIR(GP2Y0A02YK,1);
 
 Servo s;
 int inc=-1;//gets inverted on first run
@@ -61,15 +63,15 @@ void setup()                    // run once, when the sketch starts
   delay(1000);
   steer(STRAIGHT);
   delay(1000);
-  //drive(DIR_FWD);
+  drive(DIR_FWD);
   
 }
 
 
 void laser()
 {
-  frontDist[stepCnt]=getFrontDist();
-  backDist[stepCnt]=getBackDist();
+  frontDist[stepCnt]=frontIR.getData();//getFrontDist();
+  backDist[stepCnt]=backIR.getData();//getBackDist();
   if(stepCnt == RANGE_IN_STEPS -1 | stepCnt==0)
   {
     inc=-inc;
@@ -147,10 +149,11 @@ void loop()                       // run over and over again
 {
   laser();
   //Serial.println(getFrontDist());  
-/*  obstacle=false;
-  for(int i=FRONT_VAL-CRIT_RANGE/2;i<FRONT_VAL+CRIT_RANGE/2;i++)
+  obstacle=false;
+  stop=false;
+  for(int i=0;i<RANGE_IN_STEPS;i++)
   {
-    if(frontDist[i]<50)
+    if(frontDist[i]<80)
     {
       obstacle=true;
       if(!isSteering)
@@ -158,6 +161,11 @@ void loop()                       // run over and over again
         isSteering=true;
         steer(LEFT);
       }
+    }
+    if(frontDist[i]<30)
+    {
+      stop=true;
+      drive(DIR_STOP);
     }
   }
   if(!obstacle)
@@ -168,6 +176,7 @@ void loop()                       // run over and over again
       isSteering=false;
     }
   }
-*/
+  
+
   delay(LOOP_DELAY); 
 }
