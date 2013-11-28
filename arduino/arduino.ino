@@ -23,7 +23,7 @@
 #define NUM_STEPS (180/STEP_DEGREES)
 #define CRIT_RANGE 5
 #define FRONT_VAL (NUM_STEPS/2)
-#define LOOP_DELAY 125
+#define LOOP_DELAY 170
 
 
 int frontDist[RANGE_IN_STEPS];
@@ -153,7 +153,7 @@ void loop()                       // run over and over again
   stop=false;
   for(int i=0;i<RANGE_IN_STEPS;i++)
   {
-    if(frontDist[i]<80)
+    if(frontDist[i]<53)
     {
       obstacle=true;
       if(!isSteering)
@@ -162,7 +162,7 @@ void loop()                       // run over and over again
         steer(LEFT);
       }
     }
-    if(frontDist[i]<30)
+    if(frontDist[i]<21)
     {
       stop=true;
       drive(DIR_STOP);
