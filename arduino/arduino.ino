@@ -63,6 +63,10 @@ void setup()                    // run once, when the sketch starts
   delay(1000);
   steer(STRAIGHT);
   delay(1000);
+  steer(LEFT);
+  delay(1000);
+  steer(STRAIGHT);
+  delay(1000);
   drive(DIR_FWD);
   
 }
@@ -70,8 +74,18 @@ void setup()                    // run once, when the sketch starts
 
 void laser()
 {
-  frontDist[stepCnt]=frontIR.getData();//getFrontDist();
-  backDist[stepCnt]=backIR.getData();//getBackDist();
+  int front_Dist=frontIR.getData();
+  int back_Dist=backIR.getData();
+  if(front_Dist>80)
+    frontDist[stepCnt]=90;
+  else
+    frontDist[stepCnt]=front_Dist;
+  if(back_Dist>80)
+    backDist[stepCnt]=90;
+  else
+    backDist[stepCnt]=back_Dist;
+  //frontDist[stepCnt]=frontDist>(int)80?(int)90:frontDist;
+  //backDist[stepCnt]=backIR.getData();//getBackDist();
   if(stepCnt == RANGE_IN_STEPS -1 | stepCnt==0)
   {
     inc=-inc;
@@ -144,6 +158,27 @@ void steer(byte dir){
  } 
 }
 
+void steer()
+{
+  int sumLeft=0,sumRight=0;
+  for(int i=0;i<RANGE_IN_STEPS/2;i++)
+  {
+    sumLeft+=frontDist[i];
+    sumRight+=frontDist[i+RANGE_IN_STEPS/2+RANGE_IN_STEPS%2];
+   
+  }
+  if(sumLeft<=sumRight)
+  {
+    steer(LEFT);    
+  }
+  
+  else
+  {
+    steer(RIGHT);    
+  }
+  
+}
+
 
 void loop()                       // run over and over again
 {
@@ -153,13 +188,14 @@ void loop()                       // run over and over again
   stop=false;
   for(int i=0;i<RANGE_IN_STEPS;i++)
   {
-    if(frontDist[i]<53)
+    if(frontDist[i]<75)
     {
       obstacle=true;
       if(!isSteering)
       {
         isSteering=true;
-        steer(LEFT);
+        //steer(LEFT);
+        steer();
       }
     }
     if(frontDist[i]<21)
