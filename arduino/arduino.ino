@@ -1,8 +1,7 @@
 #include <Servo.h>
 #include <SharpIR.h>
 
-#define DEBUG
-
+//pins and constants
 #define LASER_STEERING 12
 #define MOTORS_I 7    //Digital-Steering
 #define MOTORS_II 8   //Digital-Steering
@@ -17,48 +16,82 @@
 #define STRAIGHT 0
 #define LEFT 1
 #define RIGHT 2
+
+//enables some output useful for debugging
+#define DEBUG 
+//defines how many steps the sensor is moving
 #define RANGE_IN_STEPS 5
+//defines the size of a step
 #define STEP_DEGREES 10
+//defines, where the sensor starts moving, so that it always covers the area in front of the car. 
+//do not change, as this should always work
 #define STEP_OFFSET (90-((RANGE_IN_STEPS-1)*STEP_DEGREES)/2)
-#define NUM_STEPS (180/STEP_DEGREES)
-#define CRIT_RANGE 5
-#define FRONT_VAL (NUM_STEPS/2)
+//loop delay in milliseconds. this determines, how much time will be waited after a run of the loop() method.
+//mainly the laser scanning and moving is affected by this. Do not set this value too small, 
+//as the laser servo needs some time to move (depending on STEP_DEGREES) and the laser may return 
+//wrong values if it gets polled too quickly. 170 should be a reasonable choice.
 #define LOOP_DELAY 170
+//see loop() for the following two constants.
+#define DISTANCE_FAR 75
+#define DISTANCE_NEAR 23
 
 
+
+
+//if the sensor should cover the whole 180 degrees in front of it, this defines how many steps they are divided into.
+//currently not in use, maybe re-used in future versions
+#define NUM_STEPS (180/STEP_DEGREES)
+//if the sensor should cover the whole 180 degrees in front of it,
+//this defines which sensor values (or how much of them) will trigger collision avoidance.
+//currently not in use, maybe re-used in future versions
+#define CRIT_RANGE 5
+//middlemost sensor data
+//currently not in use, maybe re-used in future versions
+#define FRONT_VAL (NUM_STEPS/2)
+
+
+//arrays for storing laser data
 int frontDist[RANGE_IN_STEPS];
 int backDist[RANGE_IN_STEPS];
-float distance2;
-float distance1;
+
 bool isSteering=false;
 bool obstacle=false;
 bool stop=false;
 
 byte stepCnt=0;
+
 SharpIR backIR = SharpIR(GP2Y0A02YK,0);
 SharpIR frontIR = SharpIR(GP2Y0A02YK,1);
-
 Servo s;
-int inc=-1;//gets inverted on first run
+
+//incrementor for stepCnt. See laser().
+int inc=-1;//gets inverted on first run of laser()
 
 void drive(int dir);
 
 void setup()                    // run once, when the sketch starts
 {
+  //Basic setup
+  Serial.begin(9600);// set up Serial library at 9600 bps
+  s.attach(LASER_STEERING);
+  pinMode(MOTOR_I, OUTPUT);
+  pinMode(MOTOR_II, OUTPUT);
+  pinMode(SPEED_MOTOR_A, OUTPUT);
+  digitalWrite(SPEED_MOTOR_A, HIGH); 
+
+  //initialize the arrays with big values, so that no obstacle is assumed at the beginning.
   for(int i=0;i<RANGE_IN_STEPS;i++)
   {
     frontDist[i]=255;
     backDist[i]=255;
   }
-  Serial.begin(9600);           // set up Serial library at 9600 bps
-  s.attach(LASER_STEERING);
-  //Dist.begin(A1);
-  Serial.println("Hello world!");
+
+  //Get laser into starting position
   s.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
-  pinMode(MOTOR_I, OUTPUT);
-  pinMode(MOTOR_II, OUTPUT);
-  pinMode(SPEED_MOTOR_A, OUTPUT);
-  digitalWrite(SPEED_MOTOR_A, HIGH); ///
+
+  Serial.println("Program started.");
+  //testing the steering
+  delay(1000);
   steer(RIGHT);
   delay(1000);
   steer(STRAIGHT);
@@ -67,32 +100,32 @@ void setup()                    // run once, when the sketch starts
   delay(1000);
   steer(STRAIGHT);
   delay(1000);
+
+  //begin driving. loop() takes care of obstacles.
   drive(DIR_FWD);
-  
+
 }
 
 
 void laser()
 {
+  //store the values to avoid multiple sequential sensor readings which may produce wrong results
   int front_Dist=frontIR.getData();
   int back_Dist=backIR.getData();
-  if(front_Dist>80)
-    frontDist[stepCnt]=90;
-  else
-    frontDist[stepCnt]=front_Dist;
-  if(back_Dist>80)
-    backDist[stepCnt]=90;
-  else
-    backDist[stepCnt]=back_Dist;
-  //frontDist[stepCnt]=frontDist>(int)80?(int)90:frontDist;
-  //backDist[stepCnt]=backIR.getData();//getBackDist();
+
+  //The laser only works unto a certain distance. values above this distance are set to a reasonable value.
+  frontDist[stepCnt]=front_Dist>80?90:front_Dist;
+  backDist[stepCnt]=back_Dist>80?90:back_Dist;
+
+  //If the laser has reached the left or right corner, simply negate the incrementor
+  //so that the laser turns into the opposite direction next time.
+  //Also, print out the current values.
   if(stepCnt == RANGE_IN_STEPS -1 | stepCnt==0)
   {
     inc=-inc;
     
     #ifdef DEBUG
-    
-        Serial.print(stepCnt);
+    Serial.print(stepCnt);
     Serial.print("\t\t");
     for(byte i=0;i<RANGE_IN_STEPS;i++)
       {
@@ -100,31 +133,14 @@ void laser()
         Serial.print('\t');
       }
     Serial.println();
-    
     #endif
-    
   }
+
   stepCnt+=inc;
   s.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
 }
 
-byte getFrontDist()
-{
-  float volts2 = analogRead(LASER_SENSOR_B)*5.0/1024.0;
-  distance2 = 65.0 * pow(volts2, -1.10);
-  return distance2;
-}
-
-byte getBackDist()
-{
-  float volts1 = analogRead(LASER_SENSOR_R)*5.0/1024.0;
-  distance1 = 65.0 * pow(volts1, -1.10);
-  return distance1;  
-  
-}
-
-
-
+//set the driving direction. possible values: DIR_STOP, DIR_FWD, DIR_RWD
 void drive(int dir){
   if(dir == DIR_STOP){
     digitalWrite(MOTOR_I, LOW);
@@ -140,8 +156,10 @@ void drive(int dir){
   }
 }
 
+//control steering. possible values: STRAIGHT, LEFT, RIGHT
 void steer(byte dir){
- switch(dir){
+ switch(dir)
+  {
   case STRAIGHT:
      digitalWrite(MOTORS_I, LOW);
      digitalWrite(MOTORS_II, LOW);
@@ -155,9 +173,12 @@ void steer(byte dir){
      digitalWrite(MOTORS_II, LOW);
      break;
    default: break;
- } 
+   } 
 }
 
+
+//steers the car into the direction in which the sum of all sensor values is bigger.
+//->probably less obstacles
 void steer()
 {
   int sumLeft=0,sumRight=0;
@@ -165,13 +186,12 @@ void steer()
   {
     sumLeft+=frontDist[i];
     sumRight+=frontDist[i+RANGE_IN_STEPS/2+RANGE_IN_STEPS%2];
-   
   }
+
   if(sumLeft<=sumRight)
   {
     steer(LEFT);    
   }
-  
   else
   {
     steer(RIGHT);    
@@ -180,25 +200,27 @@ void steer()
 }
 
 
+//main loop
 void loop()                       // run over and over again
 {
   laser();
-  //Serial.println(getFrontDist());  
+
+  //If a sensor value smaller than DISTANCE_FAR is found, call steer() to avoid the obstacle.
+  //If a sensor value smaller than DISTANCE_NEAR is found, stop the car.
   obstacle=false;
   stop=false;
   for(int i=0;i<RANGE_IN_STEPS;i++)
   {
-    if(frontDist[i]<75)
+    if(frontDist[i]<DISTANCE_FAR)
     {
       obstacle=true;
       if(!isSteering)
       {
         isSteering=true;
-        //steer(LEFT);
         steer();
       }
     }
-    if(frontDist[i]<21)
+    if(frontDist[i]<DISTANCE_NEAR)
     {
       stop=true;
       drive(DIR_STOP);
@@ -212,7 +234,6 @@ void loop()                       // run over and over again
       isSteering=false;
     }
   }
-  
 
   delay(LOOP_DELAY); 
 }
