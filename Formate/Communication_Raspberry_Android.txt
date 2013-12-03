@@ -1,0 +1,34 @@
+
+//////////////////////////////////////////////////
+//												//
+//			Raspberry to Android				//
+//												//
+/////////////////////////////////////////////////
+
+	Suggestion: JSON
+	
+{
+	Speed:Integer,					//between 0 and 255
+	Direction:Integer,				//0 forward, 1 backward
+	Steering:Integer,				//0 left, 1 straight, 2 right
+	LaserData:[Integer]				//Data of the Laser
+}
+
+
+
+
+
+//////////////////////////////////////////////////
+//												//
+//			Android	to Raspberry				//
+//												//
+/////////////////////////////////////////////////
+
+	Suggestion: Simple TXT-Commands
+			(Separator: ':')
+
+Command				Value
+
+Speed				Integer		//between 0 and 255
+Direction			Integer		//0 forward, 1 backward
+Steering			Integer		//0 left, 1 straight, 2 right
