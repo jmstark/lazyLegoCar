@@ -1,8 +1,8 @@
 
 //////////////////////////////////////////////////
-//												//
-//			Raspberry to Android				//
-//												//
+//						//
+//		Raspberry to Android		//
+//						//
 /////////////////////////////////////////////////
 
 	Suggestion: JSON
@@ -19,13 +19,13 @@
 
 
 //////////////////////////////////////////////////
-//												//
-//			Android	to Raspberry				//
-//												//
+//						//
+//		Android	to Raspberry		//
+//						//
 /////////////////////////////////////////////////
 
 	Suggestion: Simple TXT-Commands
-			(Separator: ':')
+		(Separator: ':')
 
 Command				Value
 
