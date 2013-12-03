@@ -5,8 +5,8 @@
 #define LASER_STEERING 12
 #define MOTORS_I 7    //Digital-Steering
 #define MOTORS_II 8   //Digital-Steering
-#define MOTOR_I 2    //Propulsion FrontDir
-#define MOTOR_II 3  //Propulsion BackDir
+#define MOTOR_I 5    //Propulsion FrontDir
+#define MOTOR_II 6  //Propulsion BackDir
 #define SPEED_MOTOR_A 9//H-Bridge
 #define LASER_SENSOR_R A0  //Analog
 #define LASER_SENSOR_B A1 //Analog
@@ -68,6 +68,7 @@ Servo s;
 int inc=-1;//gets inverted on first run of laser()
 
 void drive(int dir);
+void setCarSpeed(byte val);
 
 void setup()                    // run once, when the sketch starts
 {
@@ -78,7 +79,6 @@ void setup()                    // run once, when the sketch starts
   pinMode(MOTOR_II, OUTPUT);
   pinMode(SPEED_MOTOR_A, OUTPUT);
   digitalWrite(SPEED_MOTOR_A, HIGH); 
-
   //initialize the arrays with big values, so that no obstacle is assumed at the beginning.
   for(int i=0;i<RANGE_IN_STEPS;i++)
   {
@@ -91,7 +91,7 @@ void setup()                    // run once, when the sketch starts
 
   Serial.println("Program started.");
   //testing the steering
-  delay(1000);
+  /*delay(1000);
   steer(RIGHT);
   delay(1000);
   steer(STRAIGHT);
@@ -100,10 +100,11 @@ void setup()                    // run once, when the sketch starts
   delay(1000);
   steer(STRAIGHT);
   delay(1000);
-
+*/
   //begin driving. loop() takes care of obstacles.
   drive(DIR_FWD);
-
+  setCarSpeed(MOTOR_I,255);
+  //analogWrite(MOTOR_I, 127);
 }
 
 
@@ -156,6 +157,11 @@ void drive(int dir){
   }
 }
 
+
+void setCarSpeed(byte motor, byte val){
+  analogWrite(motor, val);
+}
+
 //control steering. possible values: STRAIGHT, LEFT, RIGHT
 void steer(byte dir){
  switch(dir)
@@ -202,7 +208,7 @@ void steer()
 
 //main loop
 void loop()                       // run over and over again
-{
+{/*
   laser();
 
   //If a sensor value smaller than DISTANCE_FAR is found, call steer() to avoid the obstacle.
@@ -235,5 +241,5 @@ void loop()                       // run over and over again
     }
   }
 
-  delay(LOOP_DELAY); 
+  delay(LOOP_DELAY); */
 }
