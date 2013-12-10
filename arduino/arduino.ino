@@ -2,7 +2,8 @@
 #include <SharpIR.h>
 
 //pins and constants
-#define LASER_STEERING 12
+#define LASER_STEERING_FRONT 12
+#define LASER_STEERING_BACK 2
 #define MOTORS_I 7    //Digital-Steering
 #define MOTORS_II 8   //Digital-Steering
 #define MOTOR_I 5    //Propulsion FrontDir
@@ -60,9 +61,9 @@ bool stop=false;
 
 byte stepCnt=0;
 
-SharpIR backIR = SharpIR(GP2Y0A02YK,0);
-SharpIR frontIR = SharpIR(GP2Y0A02YK,1);
-Servo s;
+SharpIR backIR = SharpIR(GP2Y0A02YK,0);  //red
+SharpIR frontIR = SharpIR(GP2Y0A02YK,1); //blue
+Servo frontServo, backServo;
 
 //incrementor for stepCnt. See laser().
 int inc=-1;//gets inverted on first run of laser()
@@ -74,7 +75,8 @@ void setup()                    // run once, when the sketch starts
 {
   //Basic setup
   Serial.begin(9600);// set up Serial library at 9600 bps
-  s.attach(LASER_STEERING);
+  frontServo.attach(LASER_STEERING_FRONT);
+  backServo.attach(LASER_STEERING_BACK);
   pinMode(MOTOR_I, OUTPUT);
   pinMode(MOTOR_II, OUTPUT);
   pinMode(SPEED_MOTOR_A, OUTPUT);
@@ -87,7 +89,7 @@ void setup()                    // run once, when the sketch starts
   }
 
   //Get laser into starting position
-  s.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
+  frontServo.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
 
   Serial.println("Program started.");
   //testing the steering
@@ -126,19 +128,27 @@ void laser()
     inc=-inc;
     
     #ifdef DEBUG
-    Serial.print(stepCnt);
+    //Serial.print(stepCnt);
     Serial.print("\t\t");
+    Serial.println("Front");
     for(byte i=0;i<RANGE_IN_STEPS;i++)
       {
         Serial.print(frontDist[i]);
         Serial.print('\t');
       }
     Serial.println();
+    /*Serial.println("Back");
+    for(byte i=0;i<RANGE_IN_STEPS;i++)
+      {
+        Serial.print(backDist[i]);
+        Serial.print('\t');
+      }
+    Serial.println();*/
     #endif
   }
 
   stepCnt+=inc;
-  s.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
+  frontServo.write(STEP_OFFSET + stepCnt*STEP_DEGREES);
 }
 
 //set the driving direction. possible values: DIR_STOP, DIR_FWD, DIR_RWD
@@ -208,9 +218,9 @@ void steer()
 
 //main loop
 void loop()                       // run over and over again
-{/*
+{
   laser();
-
+/*
   //If a sensor value smaller than DISTANCE_FAR is found, call steer() to avoid the obstacle.
   //If a sensor value smaller than DISTANCE_NEAR is found, stop the car.
   obstacle=false;
@@ -240,6 +250,6 @@ void loop()                       // run over and over again
       isSteering=false;
     }
   }
-
-  delay(LOOP_DELAY); */
+*/
+  delay(LOOP_DELAY);
 }
