@@ -61,7 +61,7 @@ namespace rasp_sock{
 	std::string RaspberrySocket::receive(){
 		if(c_socket == 0)
 			return "";
-		char buffer[BUF_LEN];
+		char buffer[BUF_LEN] = {0};
 		std::string result = "";
 		int read = BUF_LEN;
 		while(read >= BUF_LEN){
@@ -86,8 +86,8 @@ namespace rasp_sock{
 	}
 	
 	
-	void RaspberrySocket::cleanup(){
-		if(s_socket != 0){
+	void RaspberrySocket::cleanup(bool flag){
+		if(s_socket != 0 && flag){
 			close(s_socket);
 			s_socket = 0;
 		}

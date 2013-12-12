@@ -18,7 +18,7 @@ namespace rasp_sock{
 			bool waitForClient();
 			std::string receive();
 			int sendMsg(const std::string&);
-			void cleanup();
+			void cleanup(bool flag = false);
 			
 		private:
 			int s_socket, c_socket;

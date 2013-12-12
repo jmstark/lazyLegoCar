@@ -25,6 +25,10 @@ int main(void){
 			break;
 		}
 		cout << rd << endl;
+		if(s.sendMsg(rd) < 0){
+			cout << "the client disconnected from the server, shutting down" << endl;
+			break;
+		}
 	}
 	return 0;
 }

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <string>
+#include <sstream>
 #include <stdint.h>
 #include <iostream>
 #include <fstream>
@@ -18,6 +19,7 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <signal.h>
+
 
 #ifndef ZeroMemory
 #define ZeroMemory(a,b) memset(a, 0, b)
