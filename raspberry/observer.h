@@ -8,11 +8,14 @@ namespace obs{
 
 	class Observer{
 		public:
-			Observer();
+			Observer(rasp_sock::RaspberrySocket *sock = NULL, pipe::USBPipe *pipe = NULL);
 			~Observer();
+			comSync fromArduino, toArduino;
+			void run();
 			
 		private:
-			com arduino, mobile;
+			rasp_sock::RaspberrySocket *sock;
+			pipe::USBPipe *pipe;
 	};
 };
 #endif

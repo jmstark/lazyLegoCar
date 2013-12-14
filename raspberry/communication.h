@@ -20,6 +20,18 @@ typedef struct communicationDataset{
 typedef com *comPtr;
 
 
+typedef struct communicationSync{
+	com com;
+	std::atomic<bool> changed;
+/*
+use block to prevent the update threads from writing 
+--> pathfinding algo must have higher privileges than other writing threads to prevent collisions
+*/
+	std::atomic<bool> block;
+	std::mutex mtx;	
+} comSync;
+
+
 std::string createJSON(comPtr ptr){
 	char buffer[10];
 	std::stringstream json;
@@ -46,6 +58,7 @@ std::string createJSON(comPtr ptr){
 int setComValue(const std::string &str, comPtr ptr){
 	char key[32], val[32];
 	sscanf(str.c_str(), "%s=%s", key, val);
+	ptr->change = 1;
 	if(strcmp(key, JSON_SPEED) == NULL){
 		ptr->speed = atoi(val, 10);
 		return 0;
@@ -59,6 +72,7 @@ int setComValue(const std::string &str, comPtr ptr){
 		return 0;
 	}
 	//laserdata mustn't be set
+	ptr->change = 0;
 	return 1;
 }
 

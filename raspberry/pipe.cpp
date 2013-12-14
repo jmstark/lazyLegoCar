@@ -39,5 +39,12 @@ namespace pipe{
 		std::string result(buffer);
 		return result;
 	}
+	
+	
+	int USBPipe::usbWrite(void *src, int size){
+		if(!linked)
+			return 0;
+		return write(fd, src, size);
+	}
 
 };

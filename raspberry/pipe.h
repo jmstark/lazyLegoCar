@@ -15,6 +15,7 @@ namespace pipe{
 			USBPipe(const std::string *pipe = NULL);
 			~USBPipe();
 			std::string usbRead();
+			int usbWrite(void*, int);
 			inline bool connected(){return linked;}
 			inline void disconnect(){if(linked)close(fd);}
 			

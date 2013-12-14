@@ -19,6 +19,9 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <signal.h>
+#include <atomic>
+#include <mutex>
+#include <thread>
 
 
 #ifndef ZeroMemory
