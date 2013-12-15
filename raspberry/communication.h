@@ -3,6 +3,8 @@
 #define COMMUNICATION
 
 #include "stdafx.h"
+#include "pipe.h"
+#include "socket.h"
 
 #define JSON_SPEED "Speed"
 #define JSON_DIR "Direction"
