@@ -71,10 +71,10 @@ void loop()
       backServo.write(getNextByte());
       break;
     case CMD_GET_LASERDATA_FRONT:
-      Serial.write(frontIR.getData();
+      Serial.write(frontIR.getData());
       break;
     case CMD_GET_LASERDATA_BACK:
-      Serial.write(backIR.getData();
+      Serial.write(backIR.getData());
       break;
     default:
       break;
@@ -120,7 +120,7 @@ void steer(byte dir){
 }
 
 //blocks until serial data is available and then returns the next byte.
-uint8 getNextByte()
+uint8_t getNextByte()
 {
   while(Serial.available()==0)
     {
