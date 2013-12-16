@@ -10,6 +10,11 @@ namespace obs{
 	Observer::~Observer(){
 	
 	}
+
+	void drive(uint8_t direction)
+	{
+		sendByte(CMD_DRIVE)
+	}
 	
 	
 	void run(){
@@ -21,13 +26,16 @@ namespace obs{
 				pipe->usbWrite((void*)&toArduino.com, sizeof com);
 				toArduino.mtx.unlock();
 			}
-			if(fromArduino.changed.load(std::memory_order_relaxed)){
+			/*if(fromArduino.changed.load(std::memory_order_relaxed)){
 				fromArduino.mtx.lock();
 				fromArduino.changed.store(false, std::memory_order_relaxed);
 				str = createJSON(&fromArduino.com);
 				fromArduino.mtx.unlock();
 				sock->sendMsg(str);
 			}
+			*/
+			fromArduino.mtx.lock();
+			pipe->usbRead(fromArduino.com.laserData, LASERDATA_LEN);
 		}
 	}
 };

@@ -16,6 +16,11 @@ namespace obs{
 		private:
 			rasp_sock::RaspberrySocket *sock;
 			pipe::USBPipe *pipe;
+			void drive(uint8_t);
+			void setSpeed(uint8_t);
+			void steer(uint8_t);
+			void getFrontLaser();
+			void getBackLaser();
 	};
 };
 #endif

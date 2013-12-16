@@ -16,7 +16,7 @@ typedef struct communicationDataset{
 	int speed;							//Speed Data, between 0 and 255
 	int direction;						//backward -1, stop 0, forward 1
 	int steering;						//left -1, straight 0, right 1
-	float laserData[LASERDATA_LEN];		//data of the 6 lasers
+	uint8_t laserData[LASERDATA_LEN];		//data of the 6 lasers
 } com;
 
 typedef com *comPtr;

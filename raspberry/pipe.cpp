@@ -27,17 +27,11 @@ namespace pipe{
 	}
 
 
-	std::string USBPipe::usbRead(){
-		char buffer[512];
-		int rd;
+	void USBPipe::usbRead(uint8_t* buffer, size_t size){
+		ZeroMemory(buffer, size);
 		if(!linked)
-			return "";
-		memset(buffer, 0, 512);
-		rd = read(fd, buffer, 512);
-		if(rd == 0)
-			return "";
-		std::string result(buffer);
-		return result;
+			return;
+		read(fd, buffer, size);
 	}
 	
 	
