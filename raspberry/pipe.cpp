@@ -1,6 +1,6 @@
 #include "pipe.h"
 
-namespace pipe{
+//namespace pipe{
 
 	USBPipe::USBPipe(const std::string *pipe){
 		if(pipe == NULL){
@@ -41,4 +41,4 @@ namespace pipe{
 		return write(fd, src, size);
 	}
 
-};
+//};

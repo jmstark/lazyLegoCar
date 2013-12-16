@@ -1,7 +1,7 @@
 #include "pipe.h"
 
 using namespace std;
-using namespace pipe;
+//using namespace pipe;
 
 int run;
 
@@ -11,6 +11,8 @@ void interrupted(int signal){
 }
 
 int main(int argc, char **argv){
+	uint8_t buffer[32];
+	uint8_t input;
 	std::string name(PIPE_DESC);
 	USBPipe pipe(&name);
 	printf("Connection State: %s\n", pipe.connected()?"True":"False");
@@ -19,7 +21,10 @@ int main(int argc, char **argv){
 	run = 1;
 	(void)signal(SIGINT, interrupted);
 	while(run){
-		std::cout << pipe.usbRead() << std::endl;
+		cin>>input;
+		pipe.usbWrite(&input,sizeof(input));
+		pipe.usbRead(buffer,sizeof(buffer));
+		std::cout << buffer << std::endl;
 	}
 	printf("disconnecting the service..\n");
 	pipe.disconnect();

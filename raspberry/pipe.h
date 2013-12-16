@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 
-namespace pipe{
+//namespace pipe{
 
 	class USBPipe{
 		public:
@@ -24,5 +24,5 @@ namespace pipe{
 			bool linked;
 	};
 	
-};
+//};
 #endif
