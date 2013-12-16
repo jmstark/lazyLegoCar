@@ -19,8 +19,8 @@ namespace obs{
 			void drive(uint8_t);
 			void setSpeed(uint8_t);
 			void steer(uint8_t);
-			void getFrontLaser();
-			void getBackLaser();
+			void getFrontDistance(uint8_t[]);
+			uint8_t getBackDistance();
 	};
 };
 #endif

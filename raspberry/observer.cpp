@@ -1,7 +1,7 @@
 #include "observer.h"
 
 namespace obs{
-	Observer::Observer(rasp_sock::RaspberrySocket *sock, pipe::USBPipe *pipe){
+	Observer::Observer(rasp_sock::RaspberrySocket *sock,pipe::USBPipe *pipe){
 		this->sock = sock;
 		this->pipe = pipe;
 	}
@@ -13,7 +13,37 @@ namespace obs{
 
 	void drive(uint8_t direction)
 	{
-		sendByte(CMD_DRIVE)
+		pipe.usbWrite(&direction,sizeof(direction));
+	}
+
+	void steer(uint8_t direction)
+	{
+		pipe.usbWrite(&direction,sizeof(direction));
+	}
+
+	void moveFrontLaser(uint8_t degrees)
+	{
+		pipe.usbWrite(&CMD_MOVE_LASER_FRONT,sizeof(uint8_t));
+		pipe.usbWrite(&degrees,sizeof(degrees));
+	}
+
+	void moveBackLaser(uint8_t degrees)
+	{
+		pipe.usbWrite(&CMD_MOVE_LASER_BACK,sizeof(uint8_t));
+		pipe.usbWrite(&degrees,sizeof(degrees));
+	}
+		
+	void getFrontDistance(uint8_t[] dist)
+	{
+		pipe.usbWrite(&GET_LASERDATA_BACK,sizeof(uint8_t));
+		//TODO: get data
+	}
+
+	uint8_t getBackDistance()
+	{
+		pipe.usbWrite(&GET_LASERDATA_BACK,sizeof(uint8_t));
+		//TODO: get data
+		return 0;
 	}
 	
 	

@@ -13,12 +13,7 @@
 #define SPEED_MOTOR_A 9//H-Bridge
 #define LASER_SENSOR_R A0  //Analog
 #define LASER_SENSOR_B A1 //Analog
-#define DIR_STOP 0
-#define DIR_FWD 1
-#define DIR_RWD 2
-#define STRAIGHT 0
-#define LEFT 1
-#define RIGHT 2
+
 
 
 SharpIR backIR = SharpIR(GP2Y0A02YK,0);  //red
