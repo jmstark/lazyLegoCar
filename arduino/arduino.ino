@@ -1,7 +1,7 @@
 #include <Servo.h>
 #include <SharpIR.h>
 
-#include "../common/serial_cmd.h"
+#include "serial_cmd.h"
 
 //pins and constants
 #define LASER_STEERING_FRONT 12
@@ -24,7 +24,7 @@
 SharpIR backIR = SharpIR(GP2Y0A02YK,0);  //red
 SharpIR frontIR = SharpIR(GP2Y0A02YK,1); //blue
 Servo frontServo, backServo;
-uint8 serialData;
+uint8_t serialData;
 
 
 
