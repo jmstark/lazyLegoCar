@@ -1,0 +1,17 @@
+#ifndef SERIAL_CMD_H
+#define SERIAL_CMD_H
+
+
+#define CMD_DRIVE_STOP 0
+#define CMD_DRIVE_FWD 1
+#define CMD_DRIVE_RWD 2
+#define CMD_STEER_LEFT 3
+#define CMD_STEER_STRAIGHT 4
+#define CMD_STEER_RIGHT 5
+#define CMD_MOVE_LASER_FRONT 6
+#define CMD_MOVE_LASER_BACK 7
+#define CMD_GET_LASERDATA_FRONT 8
+#define CMD_GET_LASERDATA_BACK 9
+
+
+#endif
