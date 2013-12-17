@@ -14,6 +14,7 @@ namespace obs{
 			void run();
 			
 		private:
+			uint8_t buffer;
 			rasp_sock::RaspberrySocket *sock;
 			pipe::USBPipe *pipe;
 			void drive(uint8_t);

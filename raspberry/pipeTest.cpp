@@ -22,6 +22,8 @@ int main(int argc, char **argv){
 	(void)signal(SIGINT, interrupted);
 	while(run){
 		cin>>input;
+		input-='0';
+		pipe.usbFlush();
 		pipe.usbWrite(&input,sizeof(input));
 		pipe.usbRead(buffer,sizeof(buffer));
 		std::cout << buffer << std::endl;

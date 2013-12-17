@@ -33,17 +33,19 @@ namespace obs{
 		pipe.usbWrite(&degrees,sizeof(degrees));
 	}
 		
-	void getFrontDistance(uint8_t[] dist)
+	void getFrontDistance(uint8_t[] dist,size_t size)
 	{
+		pipe.flush();
 		pipe.usbWrite(&GET_LASERDATA_BACK,sizeof(uint8_t));
-		//TODO: get data
+		pipe.usbRead(dist,size);
 	}
 
 	uint8_t getBackDistance()
 	{
+		pipe.flush();
 		pipe.usbWrite(&GET_LASERDATA_BACK,sizeof(uint8_t));
-		//TODO: get data
-		return 0;
+		pipe.usbRead(&buffer,sizeof(buffer));
+		return buffer;
 	}
 	
 	

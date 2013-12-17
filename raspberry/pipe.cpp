@@ -41,4 +41,8 @@
 		return write(fd, src, size);
 	}
 
+	void USBPipe::usbFlush(){
+		//fflush(fd);
+	}
+
 //};
