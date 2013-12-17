@@ -4,24 +4,25 @@
 
 #include "communication.h"
 
-namespace obs{
 
 	class Observer{
 		public:
-			Observer(rasp_sock::RaspberrySocket *sock = NULL, pipe::USBPipe *pipe = NULL);
+			Observer(rasp_sock::RaspberrySocket *sock = NULL, USBPipe *pipe = NULL);
 			~Observer();
 			comSync fromArduino, toArduino;
 			void run();
-			
-		private:
-			uint8_t buffer;
-			rasp_sock::RaspberrySocket *sock;
-			pipe::USBPipe *pipe;
 			void drive(uint8_t);
 			void setSpeed(uint8_t);
 			void steer(uint8_t);
+			void moveBackLaser(uint8_t);
+			void moveFrontLaser(uint8_t);
 			void getFrontDistance(uint8_t[]);
 			uint8_t getBackDistance();
+			
+		private:
+			rasp_sock::RaspberrySocket *sock;
+			USBPipe *pipe;
+
 	};
-};
+
 #endif

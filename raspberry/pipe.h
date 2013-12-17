@@ -15,7 +15,7 @@
 			USBPipe(const std::string *pipe = NULL);
 			~USBPipe();
 			void usbRead(uint8_t*,size_t);
-			int usbWrite(void*, int);
+			int usbWrite(void*, size_t);
 			void usbFlush();
 			inline bool connected(){return linked;}
 			inline void disconnect(){if(linked)close(fd);}

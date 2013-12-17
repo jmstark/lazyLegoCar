@@ -1,5 +1,5 @@
 #pragma once
-#ifndef STADFX
+#ifndef STDAFX
 #define STDAFX
 
 #include <stdlib.h>
@@ -23,6 +23,7 @@
 #include <mutex>
 #include <thread>
 
+#include "../arduino/serial_cmd.h"
 
 #ifndef ZeroMemory
 #define ZeroMemory(a,b) memset(a, 0, b)

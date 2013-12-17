@@ -35,7 +35,7 @@
 	}
 	
 	
-	int USBPipe::usbWrite(void *src, int size){
+	int USBPipe::usbWrite(void *src, size_t size){
 		if(!linked)
 			return 0;
 		return write(fd, src, size);
