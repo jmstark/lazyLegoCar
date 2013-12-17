@@ -8,6 +8,7 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr){
 		fprintf(stderr, "invalid sock-thread args\n");
 		return;
 	}
+	sPtr->waitForClient();
 	while(1){
 		str = sPtr->receive();
 		if(str.compare(COMMAND_FWD) == NULL){
