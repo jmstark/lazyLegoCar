@@ -16,6 +16,7 @@
 			~USBPipe();
 			void usbRead(uint8_t*,size_t);
 			int usbWrite(void*, int);
+			void usbFlush();
 			inline bool connected(){return linked;}
 			inline void disconnect(){if(linked)close(fd);}
 			
