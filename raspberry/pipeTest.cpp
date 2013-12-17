@@ -20,13 +20,18 @@ int main(int argc, char **argv){
 		return 0;
 	run = 1;
 	(void)signal(SIGINT, interrupted);
+	sleep(2);
+	pipe.usbFlush();
+		
 	while(run){
 		cin>>input;
 		input-='0';
 		pipe.usbFlush();
 		pipe.usbWrite(&input,sizeof(input));
+		//sleep(1);
 		pipe.usbRead(buffer,sizeof(buffer));
-		std::cout << buffer << std::endl;
+		for(int i=0;i<sizeof(buffer);i++)
+		std::cout << static_cast<int>(buffer[i]) << std::endl;
 	}
 	printf("disconnecting the service..\n");
 	pipe.disconnect();

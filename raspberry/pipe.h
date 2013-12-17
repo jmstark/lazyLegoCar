@@ -12,7 +12,7 @@
 
 	class USBPipe{
 		public:
-			USBPipe(const std::string *pipe = NULL);
+			USBPipe(const std::string *pipe);
 			~USBPipe();
 			void usbRead(uint8_t*,size_t);
 			int usbWrite(void*, size_t);

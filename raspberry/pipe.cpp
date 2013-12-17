@@ -2,6 +2,7 @@
 
 //namespace pipe{
 
+
 	USBPipe::USBPipe(const std::string *pipe){
 		if(pipe == NULL){
 			this->linked = false;
@@ -31,7 +32,8 @@
 		ZeroMemory(buffer, size);
 		if(!linked)
 			return;
-		read(fd, buffer, size);
+		while(read(fd, buffer, size)==0)
+			;//wait until data is available
 	}
 	
 	
@@ -42,7 +44,7 @@
 	}
 
 	void USBPipe::usbFlush(){
-		//fflush(fd);
+		tcflush(fd,TCIOFLUSH);
 	}
 
 //};
