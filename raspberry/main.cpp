@@ -1,5 +1,6 @@
 #include "observer.h"
 #include <unistd.h>
+#include "socketThread.h"
 
 int main()
 {
