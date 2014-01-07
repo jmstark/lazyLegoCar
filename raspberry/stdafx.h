@@ -36,3 +36,6 @@
 #ifndef RAD
 #define RAD(a) a*PI/180.0
 #endif 
+#ifndef DEG
+#define DEG(a) a*180.0/PI
+#endif
