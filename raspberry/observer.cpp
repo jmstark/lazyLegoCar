@@ -56,6 +56,7 @@
 		std::string str;
 		while(1){
 			if(toArduino.changed.load(std::memory_order_relaxed)){
+				std::cout<<"nh"<<std::endl;
 				toArduino.mtx.lock();
 				toArduino.changed.store(false, std::memory_order_relaxed);
 				if(toArduino.comc.direction == -1)
@@ -82,7 +83,6 @@
 				fromArduino.mtx.unlock();
 				sock->sendMsg(str);
 			}
-			*/
-			fromArduino.mtx.lock();
+			fromArduino.mtx.lock();*/
 		}
 	}
