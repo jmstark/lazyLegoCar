@@ -56,8 +56,24 @@
 		std::string str;
 		while(1){
 			if(toArduino.changed.load(std::memory_order_relaxed)){
+				std::cout<<"nh"<<std::endl;
 				toArduino.mtx.lock();
 				toArduino.changed.store(false, std::memory_order_relaxed);
+				if(toArduino.comc.direction == -1)
+					drive(DIR_RWD);
+				if(toArduino.comc.direction == 0)
+					drive(DIR_STOP);
+				if(toArduino.comc.direction == 1)
+					drive(DIR_FWD);
+				if(toArduino.comc.steering == -1)
+					steer(LEFT);
+				if(toArduino.comc.steering == 0)
+					steer(STRAIGHT);
+				if(toArduino.comc.steering == 1)
+					steer(RIGHT);
+
+				
+
 				toArduino.mtx.unlock();
 			}
 			/*if(fromArduino.changed.load(std::memory_order_relaxed)){
@@ -67,7 +83,6 @@
 				fromArduino.mtx.unlock();
 				sock->sendMsg(str);
 			}
-			*/
-			fromArduino.mtx.lock();
+			fromArduino.mtx.lock();*/
 		}
 	}

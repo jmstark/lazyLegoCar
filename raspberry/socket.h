@@ -2,7 +2,7 @@
 #ifndef RASP_SOCK
 #define RASP_SOCK
 #ifndef LEGO_STD_PORT
-#define LEGO_STD_PORT 14130
+#define LEGO_STD_PORT 4359
 #endif
 #ifndef BUF_LEN
 #define BUF_LEN 512

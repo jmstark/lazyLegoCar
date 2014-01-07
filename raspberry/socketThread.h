@@ -4,7 +4,8 @@
 
 #include "stdafx.h"
 #include "communication.h"
+#include "observer.h"
 
-void socketThreadEntry(rasp_sock::RaspberrySocket*, comSync*);
+void socketThreadEntry(rasp_sock::RaspberrySocket*, comSync*, Observer*);
 
 #endif

@@ -12,12 +12,12 @@
 #define JSON_LASERDATA "LaserData"
 #define LASERDATA_LEN 5
 
-#define COMMAND_FWD "Forwards"
-#define COMMAND_RWD "Backwards"
-#define COMMAND_LEFT "Left"
-#define COMMAND_RIGHT "Right"
-#define COMMAND_STOP "Stop"
-#define COMMAND_STRAIGHT "Straight"
+#define COMMAND_FWD "Forwards\n"
+#define COMMAND_RWD "Backwards\n"
+#define COMMAND_LEFT "Left\n"
+#define COMMAND_RIGHT "Right\n"
+#define COMMAND_STOP "Stop\n"
+#define COMMAND_STRAIGHT "Straight\n"
 
 typedef struct communicationDataset{
 	int speed;							//Speed Data, between 0 and 255

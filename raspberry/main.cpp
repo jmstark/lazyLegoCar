@@ -5,14 +5,16 @@
 int main()
 {
 	uint8_t fd[5];
-	std::string s=PIPE_DESC;
-	USBPipe p(&s);
-	//rasp_sock::RaspberrySocket s;
-	//s.initSocket();
+	std::string ps=PIPE_DESC;
+	USBPipe p(&ps);
+	rasp_sock::RaspberrySocket s;
+	s.initSocket();
 	
-	Observer o(NULL,&p);
-	//std::thread t(socketThreadEntry,&s,&o.toArduino);
-	sleep(2);
+	Observer o(&s,&p);
+	std::thread t(socketThreadEntry,&s,&o.toArduino,&o);
+	//o.run();
+	sleep(10000);
+	/*sleep(2);
 	p.usbFlush();
 	sleep(2);
 	o.drive(DIR_FWD);
@@ -30,7 +32,7 @@ int main()
 	o.moveFrontLaser(30);
 
 	o.moveBackLaser(30);
-	sleep(3);
+	sleep(3);*/
 	
 	return 0;	
 }
