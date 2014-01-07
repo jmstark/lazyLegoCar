@@ -36,7 +36,11 @@
 	{
 		pipe->usbFlush();
 		pipe->usbWrite((void*)&CMD_GET_LASERDATA_FRONT,sizeof(uint8_t));
-		pipe->usbRead(fromArduino.comc.laserDataFront,LASERDATA_LEN);
+		pipe->usbRead(fromArduino.comc.laserDataFront,LASERDATA_LEN,LASERDATA_LEN);
+		for(int i=0;i<LASERDATA_LEN;i++)
+		{
+			dist[i]=fromArduino.comc.laserDataFront[i];
+		}
 	}
 
 	uint8_t Observer::getBackDistance()
