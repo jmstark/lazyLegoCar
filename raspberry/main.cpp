@@ -24,6 +24,11 @@ int main()
 	o.getFrontDistance(fd);
 	for(int i=0;i<5;i++)
 		std::cout<<static_cast<int>(fd[i])<<' ';
+	std::cout<<static_cast<int>(o.getBackDistance());
+	sleep(1);
+	o.getFrontDistance(fd);
+	for(int i=0;i<5;i++)
+		std::cout<<static_cast<int>(fd[i])<<' ';
 	sleep(1);
 	o.moveFrontLaser(70);
 	sleep(1);
