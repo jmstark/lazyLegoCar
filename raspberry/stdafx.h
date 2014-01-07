@@ -23,11 +23,16 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <math.h>
 
 #include "../arduino/serial_cmd.h"
 
 #ifndef ZeroMemory
 #define ZeroMemory(a,b) memset(a, 0, b)
 #endif
-
+#ifndef PI
+#define PI 3.14159265
+#endif
+#ifndef RAD
+#define RAD(a) a*PI/180.0
 #endif 
