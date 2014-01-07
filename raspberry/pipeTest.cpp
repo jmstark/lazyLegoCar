@@ -23,15 +23,17 @@ int main(int argc, char **argv){
 	sleep(2);
 	pipe.usbFlush();
 		
+	uint32_t temp;
 	while(run){
-		cin>>input;
-		input-='0';
+		cin>>temp;
+		input=static_cast<uint8_t>(temp);
+		//input-='0';
 		pipe.usbFlush();
 		pipe.usbWrite(&input,sizeof(input));
 		//sleep(1);
-		pipe.usbRead(buffer,sizeof(buffer));
-		for(int i=0;i<sizeof(buffer);i++)
-		std::cout << static_cast<int>(buffer[i]) << std::endl;
+		//pipe.usbRead(buffer,sizeof(buffer));
+		//for(int i=0;i<sizeof(buffer);i++)
+		//std::cout << static_cast<int>(buffer[i]) << std::endl;
 	}
 	printf("disconnecting the service..\n");
 	pipe.disconnect();

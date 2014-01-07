@@ -28,12 +28,20 @@
 	}
 
 
-	void USBPipe::usbRead(uint8_t* buffer, size_t size){
+	void USBPipe::usbRead(uint8_t* buffer, size_t size, size_t expectedBytes/*=1*/){
 		ZeroMemory(buffer, size);
 		if(!linked)
 			return;
-		while(read(fd, buffer, size)==0)
-			;//wait until data is available
+		//while(read(fd, buffer, size)==0)
+			//;//wait until data is available
+		bytes_available=0;
+		while(bytes_available<expectedBytes)
+		{
+			//wait until enough data is available
+			ioctl(fd, FIONREAD, &bytes_available);
+		}
+		read(fd,buffer,size);
+
 	}
 	
 	

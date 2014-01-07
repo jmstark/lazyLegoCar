@@ -14,7 +14,7 @@
 		public:
 			USBPipe(const std::string *pipe);
 			~USBPipe();
-			void usbRead(uint8_t*,size_t);
+			void usbRead(uint8_t* buffer, size_t size, size_t expectedBytes=1);
 			int usbWrite(void*, size_t);
 			void usbFlush();
 			inline bool connected(){return linked;}
@@ -23,6 +23,7 @@
 		private:
 			int fd;
 			bool linked;
+			int bytes_available;
 	};
 	
 //};

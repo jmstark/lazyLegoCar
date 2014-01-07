@@ -66,7 +66,7 @@ void loop()
       backServo.write(getNextByte());
       break;
     case CMD_GET_LASERDATA_FRONT:
-      Serial.write(frontIR.getData());
+      Serial.write(/*frontIR.getData()*/(uint8_t)32);
       break;
     case CMD_GET_LASERDATA_BACK:
       Serial.write(backIR.getData());
