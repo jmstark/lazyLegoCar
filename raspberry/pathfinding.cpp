@@ -31,7 +31,7 @@ void Path::calculatePath(){
 		
 		//calculate the y pos with dst x coord
 		t = m.x * this->x / m.y + t;
-		if(this->y*(-0.5) ==  t || this->y*0.5 == t){
+		if(this->y-0.5 ==  t || this->y+0.5 == t){
 			radToDest == RAD(crRad);
 			break;
 		}
