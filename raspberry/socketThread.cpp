@@ -13,42 +13,42 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 		str = sPtr->receive();
 		std::cout<<str<<std::endl;
 		if(str.compare(COMMAND_FWD) == 0){
-			o->drive(DIR_FWD);
+			//o->drive(DIR_FWD);
 			cPtr->mtx.lock();
 			cPtr->comc.direction = 1;
 			cPtr->mtx.unlock();
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 		else if(str.compare(COMMAND_RWD) == 0){
-			o->drive(DIR_RWD);
+			//o->drive(DIR_RWD);
 			cPtr->mtx.lock();
 			cPtr->comc.direction = -1;
 			cPtr->mtx.unlock();
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 		else if(str.compare(COMMAND_LEFT) == 0){
-			o->steer(LEFT);
+			//o->steer(LEFT);
 			cPtr->mtx.lock();
 			cPtr->comc.steering = -1;
 			cPtr->mtx.unlock();
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 		else if(str.compare(COMMAND_RIGHT) == 0){
-			o->steer(RIGHT);
+			//o->steer(RIGHT);
 			cPtr->mtx.lock();
 			cPtr->comc.steering = 1;
 			cPtr->mtx.unlock();
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 		else if(str.compare(COMMAND_STRAIGHT) == 0){
-			o->steer(STRAIGHT);
+			//o->steer(STRAIGHT);
 			cPtr->mtx.lock();
 			cPtr->comc.steering = 0;
 			cPtr->mtx.unlock();
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 		else if(str.compare(COMMAND_STOP) == 0){
-			o->drive(DIR_STOP);
+			//o->drive(DIR_STOP);
 			cPtr->mtx.lock();
 			cPtr->comc.direction = 0;
 			cPtr->mtx.unlock();

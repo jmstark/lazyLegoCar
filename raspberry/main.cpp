@@ -12,8 +12,8 @@ int main()
 	
 	Observer o(&s,&p);
 	std::thread t(socketThreadEntry,&s,&o.toArduino,&o);
-	//o.run();
-	sleep(10000);
+	o.run();
+	//sleep(10000);
 	/*sleep(2);
 	p.usbFlush();
 	sleep(2);
