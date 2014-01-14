@@ -67,8 +67,8 @@ void Path::calcNewPos(time_t t){
 	if(circle){	
 		midRad += RADSPEED*t;
 		rad = RAD(midRad);
-		pos.x = WENDEKREISRADIUS * sin(rad);
-		pos.y = WENDEKREISRADIUS * cos(rad);
+		pos.x = mid.x - WENDEKREISRADIUS * sin(rad);
+		pos.y = mid.y + WENDEKREISRADIUS * cos(rad);
 		f.m = {pos.x-mid.x, mid.y-pos.y};
 		f.t = pos.y - pos.y * f.m.y / f.m.x;
 		
