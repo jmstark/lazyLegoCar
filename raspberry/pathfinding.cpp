@@ -27,7 +27,7 @@ void Path::calculatePath(){
 		m = {mid.x-P.x, mid.y-P.y};
 		
 		//calculate verticle equation 
-		t = P.y - m.x * P.x / m.y;
+		t = P.y + m.x * P.x / m.y;
 		
 		//calculate the y pos with dst x coord
 		t = m.x * this->x / m.y + t;
