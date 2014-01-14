@@ -5,13 +5,14 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="OK">OK</string>
-    <string name="LazyLegocar_Control"><u><b><i>Remote Control</i></b></u></string>
+    <string name="LazyLegocar_Control"><b>Remote Control</b></string>
     <string name="Exit">Quit App!</string>
     <string name="Left">Turn Left</string>
     <string name="Right">Turn Right</string>
     <string name="Backwards">Backwards</string>
     <string name="Forwards">Forwards</string>
-    <string name="SpeedSetting">Speed Adjustment</string>
+    <string name="Straight">Straight</string>
+    <string name="SpeedSetting"><b>Speed Adjustment</b></string>
     <string name="title_activity_left_click">LeftClick</string>
 
 </resources>
