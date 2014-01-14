@@ -23,6 +23,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <time.h>
 #include <math.h>
 
 #include "../arduino/serial_cmd.h"
