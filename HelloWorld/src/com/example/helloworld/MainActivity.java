@@ -125,7 +125,12 @@ public class MainActivity extends Activity {
 						}*/
 		          		printWriter.print("Exit");
 			  			printWriter.flush();
-			  			
+			  			try {
+							socket.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 		                finish();
 		          	}
 		          });
