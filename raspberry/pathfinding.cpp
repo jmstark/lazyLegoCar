@@ -67,12 +67,13 @@ void Path::calcNewPos(time_t t){
 	if(circle){	
 		midRad += RADSPEED*t;
 		rad = RAD(midRad);
-		pos.x = mid.x - WENDEKREISRADIUS * sin(rad);
+		if(data->steering == -1)	//-->left
+			pos.x = mid.x + WENDEKREISRADIUS * sin(rad);
+		else						//-->right
+			pos.x = mid.x - WENDEKREISRADIUS * sin(rad);
 		pos.y = mid.y + WENDEKREISRADIUS * cos(rad);
 		f.m = {pos.x-mid.x, mid.y-pos.y};
 		f.t = pos.y - pos.y * f.m.y / f.m.x;
-		
-		//linke seite fehlt
 	}
 	else{
 		//here rad == way
@@ -86,7 +87,14 @@ void Path::calcNewPos(time_t t){
 }
 
 void Path::drive(){
-	
+	/*
+	Idee:
+		1. calculate direct Path to dst
+		2. check for obstacles on the direct path
+			if obstacle decide wether left or rigth / find/search gap
+			--> new sub path, begin with 1
+			else drive to dst
+	*/
 	while(comparePos() != 0){
 		//toDo
 	}
