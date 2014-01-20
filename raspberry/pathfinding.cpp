@@ -148,7 +148,7 @@ void Path::drive(){
 	time_t start, stp;
 	Direction *d;
 	while(!dir.empty()){
-		d = dir.front();
+		d = &dir.front();
 		dir.pop();
 		stp = 0;
 		data->mtx.lock();
