@@ -25,6 +25,11 @@
 #include <thread>
 #include <time.h>
 #include <math.h>
+#include <list>
+#include <vector>
+#include <map>
+#include <stack>
+#include <queue>
 
 #include "../arduino/serial_cmd.h"
 

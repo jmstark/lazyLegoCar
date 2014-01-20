@@ -5,8 +5,8 @@
 #include "communication.h"
 
 #define WENDEKREISRADIUS 56
-#define SPEED 16.67
-#define RADSPEED 17.084
+#define SPEED 0.016667//16.67
+#define RADSPEED 0.017084
 /*
 Breite: 			22cm
 
@@ -15,8 +15,8 @@ Innen: 				34cm
 Außen: 				56cm
 
 
-Geschwindigkeit: 	0.16667 m/s
-Winkelgeschw.:		17.084 deg/s
+Geschwindigkeit: 	0.16667 m/s --> 0.016667 cm/ms
+Winkelgeschw.:		17.084 deg/s --> 0.017084 deg/ms
 */
 typedef struct point {double x,y;}pt;
 typedef struct function{
@@ -25,12 +25,16 @@ typedef struct function{
 	double f(double x){return m.y*x/m.x+t;}
 	double getM(){return m.y/m.x;}
 } func;
+typedef struct _direction{
+	uint8_t drv_info;
+	time_t t;
+} Direction;
 
 class Path{
 	public:
 		Path(double x, double y, comSync *data);
 		~Path(){}
-		int calculatePath();
+		void calculatePath();
 		void drive();
 		
 	private:
@@ -40,6 +44,7 @@ class Path{
 		time_t last;
 		comSync *data;
 		bool circle;
+		std::queue<Direction> dir;
 		
 		void calcNewPos(time_t);
 		int comparePos(){return abs(pos.x-dst.x) < 1.0 && abs(pos.y-dst.y) < 1.0 ? 0:1;}
