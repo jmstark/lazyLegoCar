@@ -82,7 +82,7 @@ void Path::calculatePath(){
 			d.t = way / SPEED;
 		else if(steering == -1 || steering == 1)
 			d.t = way/RADSPEED;
-		dir.enqueue(d);
+		dir.push(d);
 	};
 	
 	if(dst.x < 0){	//-->left
@@ -146,24 +146,25 @@ void Path::drive(){
 	*/
 	calculatePath();
 	time_t start, stp;
-	Direction d;
+	Direction *d;
 	while(!dir.empty()){
-		d = dir.dequeue();
+		d = dir.front();
+		dir.pop();
 		stp = 0;
 		data->mtx.lock();
 		data->changed.exchange(true);
 		data->comc.direction = 1;
-		data->comc.steering = d.drv_info;
+		data->comc.steering = d->drv_info;
 		data->comc.speed = 255;
 		data->mtx.unlock();
 		start = time(0);
-		while(stp < d.t){
+		while(stp < d->t){
 			stp = time(0)-start;
 		}
 	}
 	//stop
 	data->mtx.lock();
 	data->changed.exchange(true);
-	data->direction = 0;
+	data->comc.direction = 0;
 	data->mtx.unlock();
 }
