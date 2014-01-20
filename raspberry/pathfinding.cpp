@@ -73,10 +73,10 @@ void Path::calculatePath(){
 		P.y = mid.y + WENDEKREISRADIUS * cos(rad);
 		f.m = {pos.x-mid.x, mid.y-pos.y};
 		f.t = pos.y - pos.y * f.m.y / f.m.x;
-		int y = f.f(dst.x)
+		int y = f.f(dst.x);
 		return dst.y-10 <= y && dst.y+10 >= y;
 	};
-	auto pushWP = [&](double way, int steering){
+	auto pushWP = [&](double way, int steering)->void{
 		d.drv_info = steering;
 		if(steering == 0)
 			d.t = way / SPEED;

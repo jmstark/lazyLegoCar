@@ -45,3 +45,5 @@
 #ifndef DEG
 #define DEG(a) a*180.0/PI
 #endif
+
+#endif
