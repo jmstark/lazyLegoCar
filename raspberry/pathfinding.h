@@ -46,7 +46,7 @@ class Path{
 		bool circle;
 		std::queue<Direction> dir;
 		
-		void calcNewPos(time_t);
+		//void calcNewPos(time_t);
 		int comparePos(){return abs(pos.x-dst.x) < 1.0 && abs(pos.y-dst.y) < 1.0 ? 0:1;}
 };
 

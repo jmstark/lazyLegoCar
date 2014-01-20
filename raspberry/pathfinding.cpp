@@ -67,7 +67,7 @@ void Path::calculatePath(){
 	Direction d;
 	pt P;
 	
-	ZeroMemory(&d, sizeof Direction);
+	ZeroMemory(&d, sizeof(Direction));
 	//rad = RAD(midRad);
 	auto calcF = [&]()->bool{
 		P.y = mid.y + WENDEKREISRADIUS * cos(rad);
@@ -82,7 +82,7 @@ void Path::calculatePath(){
 			d.t = way / SPEED;
 		else if(steering == -1 || steering == 1)
 			d.t = way/RADSPEED;
-		dir.push(d);
+		dir.enqueue(d);
 	};
 	
 	if(dst.x < 0){	//-->left
@@ -108,6 +108,7 @@ void Path::calculatePath(){
 }
 
 //obsolete
+/*
 void Path::calcNewPos(time_t t){
 	//double way;
 	double rad;
@@ -132,6 +133,7 @@ void Path::calcNewPos(time_t t){
 		pos.y += pos.y*rad;
 	}
 }
+*/
 
 void Path::drive(){
 	/*
@@ -146,7 +148,7 @@ void Path::drive(){
 	time_t start, stp;
 	Direction d;
 	while(!dir.empty()){
-		d = dir.pop();
+		d = dir.dequeue();
 		stp = 0;
 		data->mtx.lock();
 		data->changed.exchange(true);
