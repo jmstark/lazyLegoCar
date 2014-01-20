@@ -67,7 +67,7 @@ void Path::calculatePath(){
 	Direction d;
 	pt P;
 	
-	ZeroMemory(&dir, sizeof Direction);
+	ZeroMemory(&d, sizeof Direction);
 	//rad = RAD(midRad);
 	auto calcF = [&]()->bool{
 		P.y = mid.y + WENDEKREISRADIUS * cos(rad);
@@ -114,7 +114,7 @@ void Path::calcNewPos(time_t t){
 	if(circle){	
 		midRad += RADSPEED*t;
 		rad = RAD(midRad);
-		if(data->steering == -1)	//-->left
+		if(data->comc.steering == -1)	//-->left
 			pos.x = mid.x + WENDEKREISRADIUS * sin(rad);
 		else						//-->right
 			pos.x = mid.x - WENDEKREISRADIUS * sin(rad);
