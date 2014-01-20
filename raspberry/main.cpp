@@ -1,6 +1,6 @@
 #include "observer.h"
 #include <unistd.h>
-#include "socketThread.h"
+#include "threads.h"
 
 int main()
 {
@@ -11,7 +11,8 @@ int main()
 	s.initSocket();
 	
 	Observer o(&s,&p);
-	std::thread t(socketThreadEntry,&s,&o.toArduino,&o);
+	std::thread t1(socketThreadEntry,&s,&o.toArduino,&o);
+	std::thread t2(pathFindingThread, &o.toArduino);
 	o.run();
 	//sleep(10000);
 	/*sleep(2);

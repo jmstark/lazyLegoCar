@@ -1,4 +1,4 @@
-#include "socketThread.h"
+#include "threads.h"
 
 void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer* o){
 	std::string str;
@@ -61,4 +61,10 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 	}
+}
+
+
+void pathFindingThread(comSync *data){
+	Path path(100,100,data);
+	path.drive();
 }
