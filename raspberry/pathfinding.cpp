@@ -66,48 +66,53 @@ void Path::calculatePath(){
 	//double rad;
 	Direction d;
 	pt P;
-	
+
 	ZeroMemory(&d, sizeof(Direction));
 	//rad = RAD(midRad);
 	auto calcF = [&]()->bool{
-		P.y = mid.y + WENDEKREISRADIUS * cos(rad);
-		f.m = {pos.x-mid.x, mid.y-pos.y};
-		f.t = pos.y - pos.y * f.m.y / f.m.x;
+		P.y = mid.y + WENDEKREISRADIUS * sin(rad);
+		f.m = { P.x - mid.x, mid.y - P.y };
+		f.t = P.y - P.x * f.m.y / f.m.x;
 		int y = f.f(dst.x);
-		return dst.y-10 <= y && dst.y+10 >= y;
+#ifdef RASP_DEBUG
+		printf("%d\n", y);
+#endif
+		return dst.y - 10 <= y && dst.y + 10 >= y;
 	};
 	auto pushWP = [&](double way, int steering)->void{
 		d.drv_info = steering;
 #ifdef RASP_DEBUG
 		printf("drv_info: %d\tsteering: %d\n", d.drv_info, steering);
 #endif
-		if(steering == 0)
+		if (steering == 0)
 			d.t = way / SPEED;
-		else if(steering == -1 || steering == 1)
-			d.t = way/RADSPEED;
+		else if (steering == -1 || steering == 1)
+			d.t = way / RADSPEED;
 		dir.push(d);
 	};
 	
-	if(dst.x < 0){	//-->left
-		for(int angle = 0; angle < 360; angle++){
-			P.x = mid.x + WENDEKREISRADIUS * sin(RAD(angle));
-			if(calcF()){
-				pushWP(angle,-1);
+	if (dst.x < 0){	//-->left
+		for (int angle = 0; angle < 360; angle++){
+			rad = cos(RAD(angle));
+			P.x = mid.x + WENDEKREISRADIUS * rad;
+			if (calcF()){
+				pushWP(angle, -1);
 				break;
 			}
 		}
 	}
 	else{						//-->right
-		for(int angle = 0; angle < 360; angle++){
-			P.x = mid.x - WENDEKREISRADIUS * sin(RAD(angle));
-			if(calcF()){
-				pushWP(angle,1);
+		for (int angle = 0; angle < 360; angle++){
+			rad = cos(RAD(angle));
+			P.x = mid.x - WENDEKREISRADIUS * rad;
+			if (calcF()){
+				pushWP(angle, 1);
 				break;
 			}
 		}
 	}
 	//now just need to drive straight to the dst
-	pushWP(hypot(dst.x-P.x, dst.y-P.y), 0);
+	pushWP(hypot(dst.x - P.x, dst.y - P.y), 0);
 }
 
 //obsolete
