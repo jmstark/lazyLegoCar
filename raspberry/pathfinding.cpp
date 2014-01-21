@@ -144,13 +144,23 @@ void Path::drive(){
 			--> new sub path, begin with 1
 			else drive to dst
 	*/
+#ifdef RASP_DEBUG
+	cout << "starting pathfinding algorithm" << endl;
+	cout << "calculating path" << endl;
+#endif
 	calculatePath();
+#ifdef RASP_DEBUG
+	cout << "calculation completed" << endl;
+#endif
 	time_t start, stp;
 	Direction *d;
 	while(!dir.empty()){
 		d = &dir.front();
 		dir.pop();
 		stp = 0;
+#ifdef RASP_DEBUG
+		cout << "driving " << d->t << " seconds in direction " << d->drv_info << endl;
+#endif
 		data->mtx.lock();
 		data->changed.exchange(true);
 		data->comc.direction = 1;

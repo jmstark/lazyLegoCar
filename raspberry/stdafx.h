@@ -46,4 +46,7 @@
 #define DEG(a) a*180.0/PI
 #endif
 
+//for debug
+#define RASP_DEBUG
+
 #endif
