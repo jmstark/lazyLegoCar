@@ -16,7 +16,7 @@ using namespace std;
 	void Observer::drive(uint8_t direction)
 	{
 #ifdef RASP_DEBUG
-		cout << "driving to: " << direction << endl;
+		printf("driving to: %d\n", direction);
 #endif
 		pipe->usbWrite((void*)&direction,sizeof(direction));
 	}
@@ -24,7 +24,7 @@ using namespace std;
 	void Observer::steer(uint8_t direction)
 	{
 #ifdef RASP_DEBUG
-		cout << "steering to: " << direction << endl;
+		printf("steering to: %d\n", direction);
 #endif
 		pipe->usbWrite((void*)&direction,sizeof(direction));
 	}
@@ -32,7 +32,7 @@ using namespace std;
 	void Observer::moveFrontLaser(uint8_t degrees)
 	{
 #ifdef RASP_DEBUG
-		cout << "moving frontLaser: " << degrees << endl;
+		printf("moving frontLaser: %d\n",degrees);
 #endif
 		pipe->usbWrite((void*)&CMD_MOVE_LASER_FRONT,sizeof(uint8_t));
 		pipe->usbWrite((void*)&degrees,sizeof(degrees));
@@ -41,7 +41,7 @@ using namespace std;
 	void Observer::moveBackLaser(uint8_t degrees)
 	{
 #ifdef RASP_DEBUG
-		cout << "moving backLaser: " << degrees << endl;
+		printf("moving backLaser: %d\n", degrees);
 #endif
 		pipe->usbWrite((void*)&CMD_MOVE_LASER_BACK,sizeof(uint8_t));
 		pipe->usbWrite((void*)&degrees,sizeof(degrees));

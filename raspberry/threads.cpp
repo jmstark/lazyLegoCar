@@ -65,6 +65,16 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 
 
 void pathFindingThread(comSync *data){
-	Path path(100,100,data);
-	path.drive();
+	//Path path(100,50,data);
+	//path.drive();
+	sleep(10);
+	data->mtx.lock();
+	data->comc.direction = 1;
+	data->changed.exchange(true);
+	data->mtx.unlock();
+	sleep(2);
+	data->mtx.lock();
+	data->comc.direction = 0;
+	data->changed.exchange(true);
+	data->mtx.unlock();
 }

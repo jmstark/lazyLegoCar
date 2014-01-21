@@ -78,6 +78,9 @@ void Path::calculatePath(){
 	};
 	auto pushWP = [&](double way, int steering)->void{
 		d.drv_info = steering;
+#ifdef RASP_DEBUG
+		printf("drv_info: %d\tsteering: %d\n", d.drv_info, steering);
+#endif
 		if(steering == 0)
 			d.t = way / SPEED;
 		else if(steering == -1 || steering == 1)
@@ -159,7 +162,7 @@ void Path::drive(){
 		dir.pop();
 		stp = 0;
 #ifdef RASP_DEBUG
-		cout << "driving " << d->t << " seconds in direction " << d->drv_info << endl;
+		printf("driving %d seconds in direction %d\n", d->t,d->drv_info);
 #endif
 		data->mtx.lock();
 		data->changed.exchange(true);
@@ -172,9 +175,15 @@ void Path::drive(){
 			stp = time(0)-start;
 		}
 	}
+#ifdef RASP_DEBUG
+		printf("reached destination, stopping vehicle\n");
+#endif
 	//stop
 	data->mtx.lock();
 	data->changed.exchange(true);
 	data->comc.direction = 0;
 	data->mtx.unlock();
+#ifdef RASP_DEBUG
+		printf("END\n");
+#endif
 }

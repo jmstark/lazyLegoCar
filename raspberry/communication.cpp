@@ -26,15 +26,15 @@ std::string createJSON(comPtr ptr){
 int setComValue(const std::string &str, comPtr ptr){
 	char key[32], val[32];
 	sscanf(str.c_str(), "%s=%s", key, val);
-	if(strcmp(key, JSON_SPEED) == NULL){
+	if(strcmp(key, JSON_SPEED) == 0){
 		ptr->speed = atoi(val);
 		return 0;
 	}
-	else if(strcmp(key, JSON_DIR) == NULL){
+	else if(strcmp(key, JSON_DIR) == 0){
 		ptr->direction = atoi(val);
 		return 0;
 	}
-	else if(strcmp(key, JSON_STEERING) == NULL){
+	else if(strcmp(key, JSON_STEERING) == 0){
 		ptr->steering = atoi(val);
 		return 0;
 	}
