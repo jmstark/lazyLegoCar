@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -std=c++0x -pthread
 LDFLAGS=
 SOURCES=main.cpp communication.cpp observer.cpp pathfinding.cpp pipe.cpp socket.cpp threads.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
