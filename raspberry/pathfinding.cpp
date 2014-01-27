@@ -158,6 +158,10 @@ void Path::drive(){
 	cout << "starting pathfinding algorithm" << endl;
 	cout << "calculating path" << endl;
 #endif
+	data->mtx.lock();
+	data->changed.exchange(true);
+	data->comc.direction = 0;
+	data->mtx.unlock();
 	calculatePath();
 #ifdef RASP_DEBUG
 	cout << "calculation completed" << endl;
@@ -167,15 +171,21 @@ void Path::drive(){
 		dir.pop();
 		stp = 0;
 #ifdef RASP_DEBUG
-		printf("driving %lms in direction %d\n", d->t,d->drv_info);
+		printf("driving %l ms in direction %d\nsetting direction", d->t,d->drv_info);
 #endif
 		data->mtx.lock();
-		data->changed.exchange(true);
+		data->changed.store(true);
 		data->comc.steering = d->drv_info;
 		data->mtx.unlock();
+#ifdef RASP_DEBUG
+		printf("waiting for 2s");
+#endif
 		sleep(2);
+#ifdef RASP_DEBUG
+		printf("start driving");
+#endif
 		data->mutex.lock();
-		data->changed.exchange(true);
+		data->changed.store(true);
 		data->comc.direction = 1;
 		//data->comc.speed = 255;
 		data->mtx.unlock();
