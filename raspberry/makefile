@@ -5,5 +5,6 @@ SOURCES=main.cpp communication.cpp observer.cpp pathfinding.cpp pipe.cpp socket.
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=lazyLegoCar
 
-all: $(SOURCES) $(EXECUTABLE)
+all: 
+	$(CC) $(SOURCES) $(EXECUTABLE)
 	
