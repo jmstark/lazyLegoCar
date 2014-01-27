@@ -171,9 +171,13 @@ void Path::drive(){
 #endif
 		data->mtx.lock();
 		data->changed.exchange(true);
-		data->comc.direction = 1;
 		data->comc.steering = d->drv_info;
-		data->comc.speed = 255;
+		data->mtx.unlock();
+		sleep(2);
+		data->mutex.lock();
+		data->changed.exchange(true);
+		data->comc.direction = 1;
+		//data->comc.speed = 255;
 		data->mtx.unlock();
 		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){

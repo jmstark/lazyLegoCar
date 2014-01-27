@@ -81,7 +81,7 @@ using namespace std;
 				std::cout<<"nh"<<std::endl;
 #endif
 				toArduino.mtx.lock();
-				toArduino.changed.store(false, std::memory_order_relaxed);
+				toArduino.changed.store(false);//, std::memory_order_relaxed);
 				if(toArduino.comc.direction == -1)
 					drive(DIR_RWD);
 				if(toArduino.comc.direction == 0)
