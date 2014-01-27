@@ -167,7 +167,7 @@ void Path::drive(){
 		dir.pop();
 		stp = 0;
 #ifdef RASP_DEBUG
-		printf("driving %d seconds in direction %d\n", d->t,d->drv_info);
+		printf("driving %lms in direction %d\n", d->t,d->drv_info);
 #endif
 		data->mtx.lock();
 		data->changed.exchange(true);
