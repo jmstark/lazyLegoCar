@@ -193,6 +193,11 @@ void Path::drive(){
 		while(stp < d->t){
 			stp = (clock()/(CLOCKS_PER_SEC/1000))-start;
 		}
+		data->mtx.lock();
+		data->changed.exchange(true);
+		data->comc.direction = 0;
+		data->mtx.unlock();
+		sleep(1);
 	}
 #ifdef RASP_DEBUG
 		printf("reached destination, stopping vehicle\n");
