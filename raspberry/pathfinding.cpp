@@ -152,6 +152,8 @@ void Path::drive(){
 			--> new sub path, begin with 1
 			else drive to dst
 	*/
+	clock_t start, stp;
+	Direction *d;
 #ifdef RASP_DEBUG
 	cout << "starting pathfinding algorithm" << endl;
 	cout << "calculating path" << endl;
@@ -160,8 +162,6 @@ void Path::drive(){
 #ifdef RASP_DEBUG
 	cout << "calculation completed" << endl;
 #endif
-	time_t start, stp;
-	Direction *d;
 	while(!dir.empty()){
 		d = &dir.front();
 		dir.pop();
@@ -175,9 +175,9 @@ void Path::drive(){
 		data->comc.steering = d->drv_info;
 		data->comc.speed = 255;
 		data->mtx.unlock();
-		start = time(0);
+		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){
-			stp = time(0)-start;
+			stp = (clock()/(CLOCKS_PER_SEC/1000))-start;
 		}
 	}
 #ifdef RASP_DEBUG

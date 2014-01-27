@@ -27,7 +27,7 @@ typedef struct function{
 } func;
 typedef struct _direction{
 	uint8_t drv_info;
-	time_t t;
+	clock_t t;
 } Direction;
 
 class Path{
