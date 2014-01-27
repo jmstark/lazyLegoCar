@@ -18,6 +18,8 @@
 #define COMMAND_RIGHT "Right"
 #define COMMAND_STOP "Stop"
 #define COMMAND_STRAIGHT "Straight"
+#define COMMAND_DESTINATION "Destination"
+#define COMMAND_Speed "Speed"
 
 typedef struct communicationDataset{
 	int speed;							//Speed Data, between 0 and 255
