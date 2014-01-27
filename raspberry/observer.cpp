@@ -102,43 +102,15 @@ using namespace std;
 	
 	void Observer::run(){
 		std::string str;
+		moveBackLaser(10);
 		while(1){
 			
 			usleep(150*1000);
-			angle+=incrementor*10;
-			if(angle>=160 || angle <= 20)
-				incrementor=-incrementor;
-			moveBackLaser(angle);
-
-			if(toArduino.changed.load()){
-#ifdef RASP_DEBUG
-				std::cout<<"nh"<<std::endl;
-#endif
-				toArduino.mtx.lock();
-				toArduino.changed.store(false);//, std::memory_order_relaxed);
-				if(toArduino.comc.direction == -1)
-					drive(DIR_RWD);
-				if(toArduino.comc.direction == 0)
-					drive(DIR_STOP);
-				if(toArduino.comc.direction == 1)
-					drive(DIR_FWD);
-				if(toArduino.comc.steering == -1)
-					steer(LEFT);
-				if(toArduino.comc.steering == 0)
-					steer(STRAIGHT);
-				if(toArduino.comc.steering == 1)
-					steer(RIGHT);
-				toArduino.mtx.unlock();
+			if(toArduino.pathFinding){
+				angle+=incrementor*10;
+				if(angle>=160 || angle <= 20)
+					incrementor=-incrementor;
+				moveBackLaser(angle);
 			}
-			getFrontDistance();
-			getBackDistance();
-			/*if(fromArduino.changed.load(std::memory_order_relaxed)){
-				fromArduino.mtx.lock();
-				fromArduino.changed.store(false, std::memory_order_relaxed);
-				str = createJSON(&fromArduino.com);
-				fromArduino.mtx.unlock();
-				sock->sendMsg(str);
-			}
-			fromArduino.mtx.lock();*/
 		}
 	}
