@@ -65,7 +65,7 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 
 
 void pathFindingThread(comSync *data){
-	Path path(100,50,data);
+	Path path(100,100,data);
 	path.drive();
 	/*
 	sleep(10);
