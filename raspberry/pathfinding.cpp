@@ -184,7 +184,7 @@ void Path::drive(){
 #ifdef RASP_DEBUG
 		printf("start driving");
 #endif
-		data->mutex.lock();
+		data->mtx.lock();
 		data->changed.store(true);
 		data->comc.direction = 1;
 		//data->comc.speed = 255;
