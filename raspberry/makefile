@@ -6,5 +6,5 @@ OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=lazyLegoCar
 
 all: 
-	$(CC) $(SOURCES) $(EXECUTABLE)
+	$(CC) $(SOURCES) $(CFLAGS) $(EXECUTABLE)
 	
