@@ -122,6 +122,9 @@ void Path::calcNewPos(clock_t t){
 	double rad;
 	if(data->comc.steering == -1 || data->comc.steering == 1){	
 		midRad += RADSPEED*(t/(CLOCKS_PER_SEC/1000));
+#ifdef RASP_DEBUG
+		printf("midRad: %g\n", midRad);
+#endif 
 		rad = RAD(midRad);
 		if(data->comc.steering == -1)	//-->left
 			pos.x = mid.x + WENDEKREISRADIUS * cos(rad);
