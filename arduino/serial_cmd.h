@@ -20,6 +20,11 @@ const uint8_t CMD_MOVE_LASER_FRONT=6;
 const uint8_t CMD_MOVE_LASER_BACK=7;
 const uint8_t CMD_GET_LASERDATA_FRONT=8;
 const uint8_t CMD_GET_LASERDATA_BACK=9;
+const uint8_t CMD_RED_LED_ON=10;
+const uint8_t CMD_RED_LED_OFF=11;
+const uint8_t CMD_YELLOW_LED_ON=12;
+const uint8_t CMD_YELLOW_LED_OFF=13;
+
 
 
 #endif
