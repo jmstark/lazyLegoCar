@@ -80,7 +80,7 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 }
 
 
-void pathFindingThread(comSync *data){
-	Path path(100,100,data);
+void pathFindingThread(Observer *obs){
+	Path path(100,100,&obs->toArduino, obs);
 	path.drive();
 }
