@@ -237,7 +237,7 @@ void Path::drive(){
 		stp = 0;
 		midRad = 0;
 #ifdef RASP_DEBUG
-		printf("driving %zu ms in direction %hhd\nsetting direction\n", d->t,d->drv_info);
+		printf("driving %ld ms in direction %hhd\nsetting direction\n", d->t,d->drv_info);
 #endif
 		setDirection(d->drv_info);
 #ifdef RASP_DEBUG
