@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "communication.h"
+#include "observer.h"
 
 #define WENDEKREISRADIUS 56
 #define SPEED 0.016667//16.67
@@ -32,7 +33,7 @@ typedef struct _direction{
 
 class Path{
 	public:
-		Path(double x, double y, comSync *data);
+		Path(double x, double y, comSync *data, Observer *obs);
 		~Path(){}
 		void calculatePath();
 		void drive();
@@ -45,7 +46,7 @@ class Path{
 		comSync *data;
 		bool circle;
 		std::queue<Direction> dir;
-		
+		Observer *obs;
 		//void calcNewPos(time_t);
 		int comparePos(){return abs(pos.x-dst.x) < 1.0 && abs(pos.y-dst.y) < 1.0 ? 0:1;}
 };

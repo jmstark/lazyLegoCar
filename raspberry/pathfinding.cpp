@@ -2,9 +2,10 @@
 
 using namespace std;
 
-Path::Path(double x, double y, comSync *data){
+Path::Path(double x, double y, comSync *data, Observer *obs){
 	this->dst.x = x;
 	this->dst.y = y;
+	this->obs = obs;
 	dist = hypot(x,y);
 	rad = atan2(x,y);
 	mid = {WENDEKREISRADIUS,0};

@@ -54,10 +54,12 @@ using namespace std;
 #endif
 		pipe->usbFlush();
 		pipe->usbWrite((void*)&CMD_GET_LASERDATA_FRONT,sizeof(uint8_t));
-		pipe->usbRead(fromArduino.comc.laserDataFront,LASERDATA_LEN,LASERDATA_LEN);
-		for(int i=0;i<LASERDATA_LEN;i++)
-		{
-			dist[i]=fromArduino.comc.laserDataFront[i];
+		pipe->usbRead(toArduino.comc.laserDataFront,LASERDATA_LEN,LASERDATA_LEN);
+		if (dist != NULL){
+			for(int i=0;i<LASERDATA_LEN;i++)
+			{
+				dist[i]=fromArduino.comc.laserDataFront[i];
+			}	
 		}
 	}
 
@@ -68,8 +70,8 @@ using namespace std;
 #endif
 		pipe->usbFlush();
 		pipe->usbWrite((void*)&CMD_GET_LASERDATA_BACK,sizeof(uint8_t));
-		pipe->usbRead(&fromArduino.comc.laserDataBack,sizeof(uint8_t));
-		return fromArduino.comc.laserDataBack;
+		pipe->usbRead(&toArduino.comc.laserDataBack,sizeof(uint8_t));
+		return toArduino.comc.laserDataBack;
 	}
 	
 	
@@ -94,11 +96,10 @@ using namespace std;
 					steer(STRAIGHT);
 				if(toArduino.comc.steering == 1)
 					steer(RIGHT);
-
-				
-
 				toArduino.mtx.unlock();
 			}
+			getFrontDistance();
+			getBackDistance();
 			/*if(fromArduino.changed.load(std::memory_order_relaxed)){
 				fromArduino.mtx.lock();
 				fromArduino.changed.store(false, std::memory_order_relaxed);
