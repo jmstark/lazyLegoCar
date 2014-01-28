@@ -120,19 +120,34 @@ void Path::calculatePath(){
 void Path::calcNewPos(clock_t t){
 	//double way;
 	double rad;
+	auto calcF = [&]()->bool{
+		pos.y = mid.y + WENDEKREISRADIUS * sin(rad);
+		f.m = { pos.x - mid.x, mid.y - pos.y };
+		f.t = pos.y - pos.x * f.m.y / f.m.x;
+		int y = f.f(dst.x);
+#ifdef RASP_DEBUG
+		printf("%d\n", y);
+#endif
+		return dst.y - 10 <= y && dst.y + 10 >= y;
+	};
+	
 	if(data->comc.steering == -1 || data->comc.steering == 1){	
 		midRad += RADSPEED*t;
+		rad = RAD(midRad);
 #ifdef RASP_DEBUG
-		printf("midRad: %g\n", midRad);
+		printf("midRad: %g,(deg), %g(rad)\n", midRad, rad);
 #endif 
 		rad = RAD(midRad);
 		if(data->comc.steering == -1)	//-->left
 			pos.x = mid.x + WENDEKREISRADIUS * cos(rad);
 		else						//-->right
 			pos.x = mid.x - WENDEKREISRADIUS * cos(rad);
+		calcF();
+		/*
 		pos.y = mid.y + WENDEKREISRADIUS * sin(rad);
 		f.m = {pos.x-mid.x, mid.y-pos.y};
 		f.t = pos.y - pos.y * f.m.y / f.m.x;
+		*/
 	}
 	else{
 		//here rad == way
