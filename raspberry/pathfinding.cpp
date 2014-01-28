@@ -116,12 +116,11 @@ void Path::calculatePath(){
 	pushWP(hypot(dst.x - P.x, dst.y - P.y), 0);
 }
 
-//obsolete
-/*
-void Path::calcNewPos(time_t t){
+
+void Path::calcNewPos(clock_t t){
 	//double way;
 	double rad;
-	if(circle){	
+	if(data->comc.steering == -1 || data->comc.steering == 1){	
 		midRad += RADSPEED*t;
 		rad = RAD(midRad);
 		if(data->comc.steering == -1)	//-->left
@@ -142,7 +141,7 @@ void Path::calcNewPos(time_t t){
 		pos.y += pos.y*rad;
 	}
 }
-*/
+
 
 void Path::drive(){
 	/*
@@ -155,14 +154,17 @@ void Path::drive(){
 	*/
 	clock_t start, stp;
 	Direction *d;
+	auto driveCar = [&](uint8_t drv)->void{
+		data->mtx.lock();
+		data->changed.exchange(true);
+		data->comc.direction = drv;
+		data->mtx.unlock();
+	};
 #ifdef RASP_DEBUG
 	cout << "starting pathfinding algorithm" << endl;
 	cout << "calculating path" << endl;
 #endif
-	data->mtx.lock();
-	data->changed.exchange(true);
-	data->comc.direction = 0;
-	data->mtx.unlock();
+	driveCar(0);
 	calculatePath();
 #ifdef RASP_DEBUG
 	cout << "calculation completed" << endl;
@@ -183,21 +185,23 @@ void Path::drive(){
 #endif
 		sleep(2);
 #ifdef RASP_DEBUG
-		printf("start driving");
+		printf("start driving\n");
 #endif
-		data->mtx.lock();
-		data->changed.store(true);
-		data->comc.direction = 1;
-		//data->comc.speed = 255;
-		data->mtx.unlock();
+		driveCar(1);
 		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){
+			if(data->comc.laserDataFront[2] > 23 || data->comc.laserDataFront[2] < 60){
+				driveCar(0);
+				printf("obstacle ahead\n");
+				return;
+			}
 			stp = (clock()/(CLOCKS_PER_SEC/1000))-start;
 		}
-		data->mtx.lock();
-		data->changed.exchange(true);
-		data->comc.direction = 0;
-		data->mtx.unlock();
+		driveCar(0);
+		calcNewPos(d->t);
+#ifdef RASP_DEBUG
+		printf("new position: P(%d|%d)\n", pos.x, pos.y);
+#endif
 		sleep(1);
 	}
 #ifdef RASP_DEBUG
