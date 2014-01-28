@@ -164,6 +164,53 @@ void Path::calcNewPos(clock_t t, int flag){
 }
 
 
+void Path::parallelToObstacle(){
+	uint64_t ms = (2*WENDEKREISRADIUS-data->comc.laserDataFront[2])/SPEED;
+	clock_t t, start;
+	start = clock()/(CLOCKS_PER_SEC/1000);
+	t = 0;
+	driveCar(-1);
+	calcNewPos(ms, 0);
+	while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
+	driveCar(0);
+	ms = 90/RADSPEED
+	setDirection(1);
+	calcNewPos(ms);
+	computeMiddle();
+	start = clock()/(CLOCKS_PER_SEC/1000);
+	driveCar(1);
+	t = 0;
+	while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
+	driveCar(0);
+}
+
+void Path::driveCar(uint8_t drv){
+	data->mtx.lock();
+	data->changed.exchange(true);
+	data->comc.direction = drv;
+	data->mtx.unlock();
+}
+
+
+void Path::setDirection(uint8_t dir){
+	data->mtx.lock();
+	data->changed.store(true);
+	data->comc.steering = dir;
+	data->mtx.unlock();
+}
+void Path::computeMiddle()
+{
+	//double alpha=tan(f.getM());
+	//double beta=180-90-alpha;
+	//double gamma=90-beta;
+	double gamma=tan(f.getM());
+	//double a=cos(gamma)*WENDEKREISRADIUS;
+	//double b=sin(gamma)*WENDEKREISRADIUS;
+	mid.y=pos.y-cos(gamma)*WENDEKREISRADIUS;
+	mid.x=pos.x+data->comc.steering*sin(gamma)*WENDEKREISRADIUS;
+	
+}
+
 void Path::drive(){
 	/*
 	Idee:
@@ -175,22 +222,6 @@ void Path::drive(){
 	*/
 	clock_t start, stp;
 	Direction *d;
-	auto driveCar = [&](uint8_t drv)->void{
-		data->mtx.lock();
-		data->changed.exchange(true);
-		data->comc.direction = drv;
-		data->mtx.unlock();
-	};
-	auto driveBack = [&]()->void{
-		uint64_t ms = (2*WENDEKREISRADIUS-data->comc.laserDataFront[2])/SPEED;
-		clock_t t, start;
-		start = clock()/(CLOCKS_PER_SEC/1000);
-		t = 0;
-		driveCar(-1);
-		calcNewPos(ms, 0);
-		while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
-		driveCar(0);
-	};
 #ifdef RASP_DEBUG
 	cout << "starting pathfinding algorithm" << endl;
 	cout << "calculating path" << endl;
@@ -208,10 +239,7 @@ void Path::drive(){
 #ifdef RASP_DEBUG
 		printf("driving %zu ms in direction %hhd\nsetting direction\n", d->t,d->drv_info);
 #endif
-		data->mtx.lock();
-		data->changed.store(true);
-		data->comc.steering = d->drv_info;
-		data->mtx.unlock();
+		setDirection(d->drv_info);
 #ifdef RASP_DEBUG
 		printf("waiting for 2s\n");
 #endif
