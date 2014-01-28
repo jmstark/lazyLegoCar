@@ -11,15 +11,27 @@
 #define MOTOR_I 5    //Propulsion FrontDir
 #define MOTOR_II 6  //Propulsion BackDir
 #define SPEED_MOTOR_A 9//H-Bridge
-#define LASER_SENSOR_R A0  //Analog
-#define LASER_SENSOR_B A1 //Analog
+//#define LASER_SENSOR_R A0  //Analog
+//#define LASER_SENSOR_B A1 //Analog
+//#define LASER_SENSOR_0 0
+//#define LASER_SENSOR_1 1
+//#define LASER_SENSOR_2 2
+//#define LASER_SENSOR_3 3
+//#define LASER_SENSOR_4 4
+#define LASER_SENSOR_B 5
 
 
 
-SharpIR backIR = SharpIR(GP2Y0A02YK,0);  //red
-SharpIR frontIR = SharpIR(GP2Y0A02YK,1); //blue
+
+
+SharpIR backIR = SharpIR(GP2Y0A02YK,LASER_SENSOR_B);  //red
+SharpIR frontIR0 = SharpIR(GP2Y0A02YK,0); 
+SharpIR frontIR1 = SharpIR(GP2Y0A02YK,1); 
+SharpIR frontIR2 = SharpIR(GP2Y0A02YK,2); 
+SharpIR frontIR3 = SharpIR(GP2Y0A02YK,3); 
+SharpIR frontIR4 = SharpIR(GP2Y0A02YK,4); 
 Servo frontServo, backServo;
-uint8_t serialData;
+uint8_t serialData[5];
 
 
 
@@ -38,8 +50,8 @@ void setup()                    // run once, when the sketch starts
 
 void loop()
 {
-  serialData=getNextByte();
-  switch(serialData)
+  serialData[0]=getNextByte();
+  switch(serialData[0])
   {
     case CMD_DRIVE_STOP:
       drive(DIR_STOP);
@@ -66,7 +78,12 @@ void loop()
       backServo.write(getNextByte());
       break;
     case CMD_GET_LASERDATA_FRONT:
-      Serial.write(/*frontIR.getData()*/(uint8_t)32);
+      serialData[0]=frontIR0.getData();
+      serialData[1]=frontIR1.getData();
+      serialData[2]=frontIR2.getData();
+      serialData[3]=frontIR3.getData();
+      serialData[4]=frontIR4.getData();
+      Serial.write((char*)serialData);
       break;
     case CMD_GET_LASERDATA_BACK:
       Serial.write(backIR.getData());
