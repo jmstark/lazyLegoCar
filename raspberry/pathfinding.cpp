@@ -121,7 +121,7 @@ void Path::calcNewPos(clock_t t){
 	//double way;
 	double rad;
 	if(data->comc.steering == -1 || data->comc.steering == 1){	
-		midRad += RADSPEED*t;
+		midRad += RADSPEED*(t/(CLOCKS_PER_SEC/1000));
 		rad = RAD(midRad);
 		if(data->comc.steering == -1)	//-->left
 			pos.x = mid.x + WENDEKREISRADIUS * cos(rad);
@@ -133,7 +133,7 @@ void Path::calcNewPos(clock_t t){
 	}
 	else{
 		//here rad == way
-		rad = t * SPEED;
+		rad = (t/(CLOCKS_PER_SEC/1000)) * SPEED;
 		
 		//test to calc new pos
 		rad = rad/f.getM();
