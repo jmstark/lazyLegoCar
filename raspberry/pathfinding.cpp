@@ -174,7 +174,7 @@ void Path::drive(){
 		dir.pop();
 		stp = 0;
 #ifdef RASP_DEBUG
-		printf("driving %l ms in direction %d\nsetting direction", d->t,d->drv_info);
+		printf("driving %l ms in direction %d\nsetting direction\n", d->t,d->drv_info);
 #endif
 		data->mtx.lock();
 		data->changed.store(true);
