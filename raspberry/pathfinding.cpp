@@ -200,12 +200,12 @@ void Path::drive(){
 		data->comc.steering = d->drv_info;
 		data->mtx.unlock();
 #ifdef RASP_DEBUG
-		printf("waiting for 2s");
+		printf("waiting for 2s\n");
 #endif
 		sleep(2);
 #ifdef RASP_DEBUG
 		printf("start driving\n");
-		printf("Start: P(%d|%d)\n", pos.x, pos.y);
+		printf("Start: P(%g|%g)\n", pos.x, pos.y);
 #endif
 		driveCar(1);
 		start = clock()/(CLOCKS_PER_SEC/1000);
@@ -221,7 +221,7 @@ void Path::drive(){
 		driveCar(0);
 		calcNewPos(d->t);
 #ifdef RASP_DEBUG
-		printf("new position: P(%d|%d)\n", pos.x, pos.y);
+		printf("new position: P(%g|%g)\n", pos.x, pos.y);
 #endif
 		sleep(1);
 	}
