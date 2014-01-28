@@ -32,6 +32,8 @@ typedef struct _direction{
 	clock_t t;
 } Direction;
 
+
+
 class Path{
 	public:
 		Path(double x, double y, comSync *data, Observer *obs);
@@ -50,6 +52,10 @@ class Path{
 		Observer *obs;
 		void calcNewPos(clock_t,int flag = 1);
 		int comparePos(){return abs(pos.x-dst.x) < 1.0 && abs(pos.y-dst.y) < 1.0 ? 0:1;}
+		void parallelToObstacle();
+		void driveCar(uint8_t drv);
+		void setDirection(uint8_t dir);
+		void computeMiddle();
 };
 
 #endif
