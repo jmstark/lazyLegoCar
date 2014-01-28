@@ -78,18 +78,12 @@ void loop()
       backServo.write(getNextByte());
       break;
     case CMD_GET_LASERDATA_FRONT:
-      /*serialData[0]=frontIR0.getData();
+      serialData[0]=frontIR0.getData();
       serialData[1]=frontIR1.getData();
       serialData[2]=frontIR2.getData();
       serialData[3]=frontIR3.getData();
       serialData[4]=frontIR4.getData();
-      */
-      serialData[0]=5;
-      serialData[1]=6;
-      serialData[2]=7;
-      serialData[3]=8;
-      serialData[4]=9;
-      Serial.write((char*)serialData);
+      Serial.write(serialData,5);
       break;
     case CMD_GET_LASERDATA_BACK:
       Serial.write(backIR.getData());
