@@ -190,7 +190,8 @@ void Path::drive(){
 		driveCar(1);
 		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){
-			if(data->comc.laserDataFront[2] > 23 || data->comc.laserDataFront[2] < 60){
+			printf("%hh, %hh, %hh, %hh, %hh\n",data->comc.laserDataFront[0],data->comc.laserDataFront[1],data->comc.laserDataFront[2],data->comc.laserDataFront[3],data->comc.laserDataFront[4]);
+			if(data->comc.laserDataFront[2] > 23 && data->comc.laserDataFront[2] < 60){
 				driveCar(0);
 				printf("obstacle ahead\n");
 				return;
@@ -208,10 +209,7 @@ void Path::drive(){
 		printf("reached destination, stopping vehicle\n");
 #endif
 	//stop
-	data->mtx.lock();
-	data->changed.exchange(true);
-	data->comc.direction = 0;
-	data->mtx.unlock();
+	driveCar(0);
 #ifdef RASP_DEBUG
 		printf("END\n");
 #endif
