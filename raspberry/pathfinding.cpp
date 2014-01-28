@@ -117,7 +117,7 @@ void Path::calculatePath(){
 }
 
 
-void Path::calcNewPos(clock_t t){
+void Path::calcNewPos(clock_t t, int flag){
 	//double way;
 	double rad;
 	auto calcF = [&]()->bool{
@@ -128,7 +128,7 @@ void Path::calcNewPos(clock_t t){
 #ifdef RASP_DEBUG
 		printf("%d\n", y);
 #endif
-		return dst.y - 10 <= y && dst.y + 10 >= y;
+		return dst.y - 5 <= y && dst.y + 5 >= y;
 	};
 	
 	if(data->comc.steering == -1 || data->comc.steering == 1){	
@@ -153,7 +153,11 @@ void Path::calcNewPos(clock_t t){
 		//here rad == way
 		rad = t * SPEED;
 		double alpha = atan(pos.x/pos.y);
-		double hypotenuse = rad + hypot(pos.x,pos.y);
+		double hypotenuse;
+		if(flag)//data->comc.direction == 1 || data->comc.direction == 0)
+			hypotenuse = rad + hypot(pos.x,pos.y);
+		else
+			hypotenuse = rad - hypot(pos.x,pos.y);
 		pos.x = sin(alpha)*hypotenuse;
 		pos.y = cos(alpha)*hypotenuse;
 	}
@@ -176,6 +180,16 @@ void Path::drive(){
 		data->changed.exchange(true);
 		data->comc.direction = drv;
 		data->mtx.unlock();
+	};
+	auto driveBack = [&]()->void{
+		uint64_t ms = (2*WENDEKREISRADIUS-data->comc.laserDataFront[2])/SPEED;
+		clock_t t, start;
+		start = clock()/(CLOCKS_PER_SEC/1000);
+		t = 0;
+		driveCar(-1);
+		calcNewPos(ms, 0);
+		while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
+		driveCar(0);
 	};
 #ifdef RASP_DEBUG
 	cout << "starting pathfinding algorithm" << endl;
@@ -210,9 +224,12 @@ void Path::drive(){
 		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){
 			//printf("%hhu, %hhu, %hhu, %hhu, %hhu\n",data->comc.laserDataFront[0],data->comc.laserDataFront[1],data->comc.laserDataFront[2],data->comc.laserDataFront[3],data->comc.laserDataFront[4]);
-			if(data->comc.laserDataFront[2] > 23 && data->comc.laserDataFront[2] < 60){
+			if(data->comc.laserDataFront[2] > 23 && data->comc.laserDataFront[2] < 60 && data->comc.steering == 0){
+				//obstacle in front and driving straight
 				driveCar(0);
+				calcNewPos(stp);
 				printf("obstacle ahead\n");
+				driveBack();
 				return;
 			}
 			stp = (clock()/(CLOCKS_PER_SEC/1000))-start;

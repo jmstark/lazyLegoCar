@@ -8,6 +8,7 @@
 #define WENDEKREISRADIUS 56
 #define SPEED 0.016667//16.67
 #define RADSPEED 0.017084
+
 /*
 Breite: 			22cm
 
@@ -47,7 +48,7 @@ class Path{
 		bool circle;
 		std::queue<Direction> dir;
 		Observer *obs;
-		void calcNewPos(clock_t);
+		void calcNewPos(clock_t,int flag = 1);
 		int comparePos(){return abs(pos.x-dst.x) < 1.0 && abs(pos.y-dst.y) < 1.0 ? 0:1;}
 };
 
