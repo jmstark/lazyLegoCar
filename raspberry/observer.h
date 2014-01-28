@@ -17,6 +17,8 @@
 			void moveBackLaser(uint8_t);
 			void moveFrontLaser(uint8_t);
 			void getFrontDistance(uint8_t *ptr=NULL);
+			void controlYellowLed(bool on);
+			void controlRedLed(bool on);
 			uint8_t getBackDistance();
 			
 		private:

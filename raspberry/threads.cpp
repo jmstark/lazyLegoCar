@@ -8,6 +8,7 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 		return;
 	}
 	sPtr->waitForClient();
+	o->controlYellowLed(true);
 	while(1){
 		str = sPtr->receive();
 		std::cout<<str<<std::endl;

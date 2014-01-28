@@ -13,6 +13,23 @@ using namespace std;
 	
 	}
 
+	void Observer::controlYellowLed(bool on)
+	{
+#ifdef RASP_DEBUG
+		printf("Yellow LED");
+#endif
+		pipe->usbWrite(on?(void*)CMD_YELLOW_LED_ON:(void*)CMD_YELLOW_LED_OFF,sizeof(uint8_t));
+	}
+
+        void Observer::controlRedLed(bool on)
+        {
+#ifdef RASP_DEBUG
+                printf("Red LED");
+#endif
+                pipe->usbWrite(on?(void*)CMD_RED_LED_ON:(void*)CMD_RED_LED_OFF,sizeof(uint8_t));
+        }
+
+
 	void Observer::drive(uint8_t direction)
 	{
 #ifdef RASP_DEBUG
