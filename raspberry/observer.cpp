@@ -49,7 +49,7 @@ using namespace std;
 		
 	void Observer::getFrontDistance(uint8_t* dist)
 	{
-#ifdef RASP_DEBUG
+#ifdef RASP_DEBUGG
 		cout << "reading front dist" << endl;
 #endif
 		pipe->usbFlush();
@@ -65,7 +65,7 @@ using namespace std;
 
 	uint8_t Observer::getBackDistance()
 	{
-#ifdef RASP_DEBUG
+#ifdef RASP_DEBUGG
 		cout << "reading back dist" << endl;
 #endif
 		pipe->usbFlush();

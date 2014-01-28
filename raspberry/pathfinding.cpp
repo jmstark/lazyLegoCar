@@ -78,7 +78,7 @@ void Path::calculatePath(){
 #ifdef RASP_DEBUG
 		printf("%d\n", y);
 #endif
-		return dst.y - 10 <= y && dst.y + 10 >= y;
+		return dst.y - 5 <= y && dst.y + 5 >= y;
 	};
 	auto pushWP = [&](double way, int steering)->void{
 		d.drv_info = steering;
@@ -93,7 +93,7 @@ void Path::calculatePath(){
 	};
 	
 	if (dst.x < 0){	//-->left
-		for (int angle = 0; angle < 360; angle++){
+		for (double angle = 0; angle < 360; angle+=0.5){
 			rad = cos(RAD(angle));
 			P.x = mid.x + WENDEKREISRADIUS * rad;
 			if (calcF()){
@@ -103,7 +103,7 @@ void Path::calculatePath(){
 		}
 	}
 	else{						//-->right
-		for (int angle = 0; angle < 360; angle++){
+		for (double angle = 0; angle < 360; angle+=0.5){
 			rad = cos(RAD(angle));
 			P.x = mid.x - WENDEKREISRADIUS * rad;
 			if (calcF()){
@@ -117,34 +117,99 @@ void Path::calculatePath(){
 }
 
 
-void Path::calcNewPos(clock_t t){
+void Path::calcNewPos(clock_t t, int flag){
 	//double way;
 	double rad;
+	auto calcF = [&]()->bool{
+		pos.y = mid.y + WENDEKREISRADIUS * sin(rad);
+		f.m = { pos.x - mid.x, mid.y - pos.y };
+		f.t = pos.y - pos.x * f.m.y / f.m.x;
+		int y = f.f(dst.x);
+#ifdef RASP_DEBUG
+		printf("%d\n", y);
+#endif
+		return dst.y - 5 <= y && dst.y + 5 >= y;
+	};
+	
 	if(data->comc.steering == -1 || data->comc.steering == 1){	
 		midRad += RADSPEED*t;
+		rad = RAD(midRad);
 #ifdef RASP_DEBUG
-		printf("midRad: %g\n", midRad);
+		printf("midRad: %g,(deg), %g(rad)\n", midRad, rad);
 #endif 
 		rad = RAD(midRad);
 		if(data->comc.steering == -1)	//-->left
 			pos.x = mid.x + WENDEKREISRADIUS * cos(rad);
 		else						//-->right
 			pos.x = mid.x - WENDEKREISRADIUS * cos(rad);
+		calcF();
+		/*
 		pos.y = mid.y + WENDEKREISRADIUS * sin(rad);
 		f.m = {pos.x-mid.x, mid.y-pos.y};
 		f.t = pos.y - pos.y * f.m.y / f.m.x;
+		*/
 	}
 	else{
 		//here rad == way
 		rad = t * SPEED;
-		
-		//test to calc new pos
-		rad = rad/f.getM();
-		pos.x += pos.x*rad;
-		pos.y += pos.y*rad;
+		double alpha = atan(pos.x/pos.y);
+		double hypotenuse;
+		if(flag)//data->comc.direction == 1 || data->comc.direction == 0)
+			hypotenuse = rad + hypot(pos.x,pos.y);
+		else
+			hypotenuse = rad - hypot(pos.x,pos.y);
+		pos.x = sin(alpha)*hypotenuse;
+		pos.y = cos(alpha)*hypotenuse;
 	}
 }
 
+
+void Path::parallelToObstacle(){
+	uint64_t ms = (2*WENDEKREISRADIUS-data->comc.laserDataFront[2])/SPEED;
+	clock_t t, start;
+	start = clock()/(CLOCKS_PER_SEC/1000);
+	t = 0;
+	driveCar(-1);
+	calcNewPos(ms, 0);
+	while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
+	driveCar(0);
+	ms = 90/RADSPEED;
+	setDirection(1);
+	calcNewPos(ms);
+	computeMiddle();
+	start = clock()/(CLOCKS_PER_SEC/1000);
+	driveCar(1);
+	t = 0;
+	while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
+	driveCar(0);
+}
+
+void Path::driveCar(uint8_t drv){
+	data->mtx.lock();
+	data->changed.exchange(true);
+	data->comc.direction = drv;
+	data->mtx.unlock();
+}
+
+
+void Path::setDirection(uint8_t dir){
+	data->mtx.lock();
+	data->changed.store(true);
+	data->comc.steering = dir;
+	data->mtx.unlock();
+}
+void Path::computeMiddle()
+{
+	//double alpha=tan(f.getM());
+	//double beta=180-90-alpha;
+	//double gamma=90-beta;
+	double gamma=tan(f.getM());
+	//double a=cos(gamma)*WENDEKREISRADIUS;
+	//double b=sin(gamma)*WENDEKREISRADIUS;
+	mid.y=pos.y-cos(gamma)*WENDEKREISRADIUS;
+	mid.x=pos.x+data->comc.steering*sin(gamma)*WENDEKREISRADIUS;
+	
+}
 
 void Path::drive(){
 	/*
@@ -157,12 +222,6 @@ void Path::drive(){
 	*/
 	clock_t start, stp;
 	Direction *d;
-	auto driveCar = [&](uint8_t drv)->void{
-		data->mtx.lock();
-		data->changed.exchange(true);
-		data->comc.direction = drv;
-		data->mtx.unlock();
-	};
 #ifdef RASP_DEBUG
 	cout << "starting pathfinding algorithm" << endl;
 	cout << "calculating path" << endl;
@@ -178,27 +237,27 @@ void Path::drive(){
 		stp = 0;
 		midRad = 0;
 #ifdef RASP_DEBUG
-		printf("driving %zu ms in direction %hhd\nsetting direction\n", d->t,d->drv_info);
+		printf("driving %ld ms in direction %hhd\nsetting direction\n", d->t,d->drv_info);
 #endif
-		data->mtx.lock();
-		data->changed.store(true);
-		data->comc.steering = d->drv_info;
-		data->mtx.unlock();
+		setDirection(d->drv_info);
 #ifdef RASP_DEBUG
-		printf("waiting for 2s");
+		printf("waiting for 2s\n");
 #endif
 		sleep(2);
 #ifdef RASP_DEBUG
 		printf("start driving\n");
-		printf("Start: P(%d|%d)\n", pos.x, pos.y);
+		//printf("Start: P(%g|%g)\n", pos.x, pos.y);
 #endif
 		driveCar(1);
 		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){
 			//printf("%hhu, %hhu, %hhu, %hhu, %hhu\n",data->comc.laserDataFront[0],data->comc.laserDataFront[1],data->comc.laserDataFront[2],data->comc.laserDataFront[3],data->comc.laserDataFront[4]);
-			if(data->comc.laserDataFront[2] > 23 && data->comc.laserDataFront[2] < 60){
+			if(data->comc.laserDataFront[2] > 23 && data->comc.laserDataFront[2] < 60 && data->comc.steering == 0){
+				//obstacle in front and driving straight
 				driveCar(0);
+				calcNewPos(stp);
 				printf("obstacle ahead\n");
+				parallelToObstacle();
 				return;
 			}
 			stp = (clock()/(CLOCKS_PER_SEC/1000))-start;
@@ -206,7 +265,7 @@ void Path::drive(){
 		driveCar(0);
 		calcNewPos(d->t);
 #ifdef RASP_DEBUG
-		printf("new position: P(%d|%d)\n", pos.x, pos.y);
+		printf("new position: P(%g|%g)\n", pos.x, pos.y);
 #endif
 		sleep(1);
 	}
