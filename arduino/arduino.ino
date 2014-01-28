@@ -5,7 +5,7 @@
 
 //pins and constants
 #define LASER_STEERING_FRONT 12
-#define LASER_STEERING_BACK 2
+#define LASER_STEERING_BACK 4
 #define MOTORS_I 7    //Digital-Steering
 #define MOTORS_II 8   //Digital-Steering
 #define MOTOR_I 5    //Propulsion FrontDir
@@ -19,6 +19,9 @@
 //#define LASER_SENSOR_3 3
 //#define LASER_SENSOR_4 4
 #define LASER_SENSOR_B 5
+#define BEEP 13
+#define YELLOW_LED 3
+#define RED_LED 2
 
 
 
@@ -44,7 +47,12 @@ void setup()                    // run once, when the sketch starts
   pinMode(MOTOR_I, OUTPUT);
   pinMode(MOTOR_II, OUTPUT);
   pinMode(SPEED_MOTOR_A, OUTPUT);
+  pinMode(YELLOW_LED,OUTPUT);
+  pinMode(RED_LED,OUTPUT);
+  pinMode(BEEP,OUTPUT);
   digitalWrite(SPEED_MOTOR_A, HIGH); 
+  backServo.write(90);
+  frontServo.write(90);
 }
 
 
@@ -87,6 +95,18 @@ void loop()
       break;
     case CMD_GET_LASERDATA_BACK:
       Serial.write(backIR.getData());
+      break;
+    case CMD_RED_LED_ON:
+      digitalWrite(RED_LED,HIGH);      
+      break;
+    case CMD_RED_LED_OFF:
+      digitalWrite(RED_LED,LOW);      
+      break;
+    case CMD_YELLOW_LED_ON:
+      digitalWrite(YELLOW_LED,HIGH);      
+      break;
+    case CMD_YELLOW_LED_OFF:
+      digitalWrite(YELLOW_LED,LOW);      
       break;
     default:
       break;
