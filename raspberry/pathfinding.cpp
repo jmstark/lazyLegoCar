@@ -124,10 +124,10 @@ void Path::calcNewPos(clock_t t){
 		midRad += RADSPEED*t;
 		rad = RAD(midRad);
 		if(data->comc.steering == -1)	//-->left
-			pos.x = mid.x + WENDEKREISRADIUS * sin(rad);
+			pos.x = mid.x + WENDEKREISRADIUS * cos(rad);
 		else						//-->right
-			pos.x = mid.x - WENDEKREISRADIUS * sin(rad);
-		pos.y = mid.y + WENDEKREISRADIUS * cos(rad);
+			pos.x = mid.x - WENDEKREISRADIUS * cos(rad);
+		pos.y = mid.y + WENDEKREISRADIUS * sin(rad);
 		f.m = {pos.x-mid.x, mid.y-pos.y};
 		f.t = pos.y - pos.y * f.m.y / f.m.x;
 	}
@@ -186,11 +186,12 @@ void Path::drive(){
 		sleep(2);
 #ifdef RASP_DEBUG
 		printf("start driving\n");
+		printf("Start: P(%d|%d)\n", pos.x, pos.y);
 #endif
 		driveCar(1);
 		start = clock()/(CLOCKS_PER_SEC/1000);
 		while(stp < d->t){
-			printf("%hh, %hh, %hh, %hh, %hh\n",data->comc.laserDataFront[0],data->comc.laserDataFront[1],data->comc.laserDataFront[2],data->comc.laserDataFront[3],data->comc.laserDataFront[4]);
+			printf("%hhu, %hhu, %hhu, %hhu, %hhu\n",data->comc.laserDataFront[0],data->comc.laserDataFront[1],data->comc.laserDataFront[2],data->comc.laserDataFront[3],data->comc.laserDataFront[4]);
 			if(data->comc.laserDataFront[2] > 23 && data->comc.laserDataFront[2] < 60){
 				driveCar(0);
 				printf("obstacle ahead\n");
