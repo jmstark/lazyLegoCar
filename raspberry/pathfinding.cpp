@@ -257,7 +257,7 @@ void Path::drive(){
 				driveCar(0);
 				calcNewPos(stp);
 				printf("obstacle ahead\n");
-				driveBack();
+				parallelToObstacle();
 				return;
 			}
 			stp = (clock()/(CLOCKS_PER_SEC/1000))-start;
