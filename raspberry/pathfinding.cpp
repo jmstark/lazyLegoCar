@@ -155,7 +155,7 @@ void Path::calcNewPos(clock_t t){
 		double alpha = atan(pos.x/pos.y);
 		double hypotenuse = rad + hypot(pos.x,pos.y);
 		pos.x = sin(alpha)*hypotenuse;
-		pos.y = cos(alpha)*hypotenuse
+		pos.y = cos(alpha)*hypotenuse;
 	}
 }
 
