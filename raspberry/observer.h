@@ -9,7 +9,7 @@
 		public:
 			Observer(rasp_sock::RaspberrySocket *sock = NULL, USBPipe *pipe = NULL);
 			~Observer();
-			comSync fromArduino, toArduino;
+			comSync /*fromArduino,*/ toArduino;
 			void run();
 			void drive(uint8_t);
 			void setSpeed(uint8_t);

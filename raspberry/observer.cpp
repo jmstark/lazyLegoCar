@@ -58,7 +58,7 @@ using namespace std;
 		if (dist != NULL){
 			for(int i=0;i<LASERDATA_LEN;i++)
 			{
-				dist[i]=fromArduino.comc.laserDataFront[i];
+				dist[i]=toArduino.comc.laserDataFront[i];
 			}	
 		}
 	}
