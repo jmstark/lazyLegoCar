@@ -78,7 +78,7 @@ void Path::calculatePath(){
 #ifdef RASP_DEBUG
 		printf("%d\n", y);
 #endif
-		return dst.y - 10 <= y && dst.y + 10 >= y;
+		return dst.y - 5 <= y && dst.y + 5 >= y;
 	};
 	auto pushWP = [&](double way, int steering)->void{
 		d.drv_info = steering;
@@ -93,7 +93,7 @@ void Path::calculatePath(){
 	};
 	
 	if (dst.x < 0){	//-->left
-		for (int angle = 0; angle < 360; angle++){
+		for (double angle = 0; angle < 360; angle+=0.5){
 			rad = cos(RAD(angle));
 			P.x = mid.x + WENDEKREISRADIUS * rad;
 			if (calcF()){
@@ -103,7 +103,7 @@ void Path::calculatePath(){
 		}
 	}
 	else{						//-->right
-		for (int angle = 0; angle < 360; angle++){
+		for (double angle = 0; angle < 360; angle+=0.5){
 			rad = cos(RAD(angle));
 			P.x = mid.x - WENDEKREISRADIUS * rad;
 			if (calcF()){
