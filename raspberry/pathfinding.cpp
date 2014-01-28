@@ -152,11 +152,10 @@ void Path::calcNewPos(clock_t t){
 	else{
 		//here rad == way
 		rad = t * SPEED;
-		
-		//test to calc new pos
-		rad = rad/f.getM();
-		pos.x += pos.x*rad;
-		pos.y += pos.y*rad;
+		double alpha = atan(pos.x/pos.y);
+		double hypotenuse = rad + hypot(pos.x,pos.y);
+		pos.x = sin(alpha)*hypotenuse;
+		pos.y = cos(alpha)*hypotenuse
 	}
 }
 
@@ -205,7 +204,7 @@ void Path::drive(){
 		sleep(2);
 #ifdef RASP_DEBUG
 		printf("start driving\n");
-		printf("Start: P(%g|%g)\n", pos.x, pos.y);
+		//printf("Start: P(%g|%g)\n", pos.x, pos.y);
 #endif
 		driveCar(1);
 		start = clock()/(CLOCKS_PER_SEC/1000);
