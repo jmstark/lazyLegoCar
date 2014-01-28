@@ -173,7 +173,7 @@ void Path::parallelToObstacle(){
 	calcNewPos(ms, 0);
 	while(t-start < ms) t = clock()/(CLOCKS_PER_SEC/1000);
 	driveCar(0);
-	ms = 90/RADSPEED
+	ms = 90/RADSPEED;
 	setDirection(1);
 	calcNewPos(ms);
 	computeMiddle();
