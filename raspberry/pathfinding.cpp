@@ -121,7 +121,7 @@ void Path::calcNewPos(clock_t t){
 	//double way;
 	double rad;
 	if(data->comc.steering == -1 || data->comc.steering == 1){	
-		midRad += RADSPEED*(t/(CLOCKS_PER_SEC/1000));
+		midRad += RADSPEED*t;
 #ifdef RASP_DEBUG
 		printf("midRad: %g\n", midRad);
 #endif 
@@ -136,7 +136,7 @@ void Path::calcNewPos(clock_t t){
 	}
 	else{
 		//here rad == way
-		rad = (t/(CLOCKS_PER_SEC/1000)) * SPEED;
+		rad = t * SPEED;
 		
 		//test to calc new pos
 		rad = rad/f.getM();
