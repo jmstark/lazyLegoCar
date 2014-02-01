@@ -101,6 +101,13 @@ using namespace std;
 	void Observer::run(){
 		std::string str;
 		while(1){
+
+			usleep(150*1000);
+			angle+=incrementor*10;
+			if(angle>=180 || angle <= 0)
+				incrementor=-incrementor;
+			
+
 			if(toArduino.changed.load(std::memory_order_relaxed)){
 #ifdef RASP_DEBUG
 				std::cout<<"nh"<<std::endl;
