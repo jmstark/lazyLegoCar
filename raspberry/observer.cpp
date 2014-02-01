@@ -120,6 +120,7 @@ using namespace std;
 			}
 			if(toArduino.pathFinding){
 				std::thread t(pathFindingThread, this, toArduino.x, toArduino.y);
+				toArduino.pathFinding = false;
 			}
 			getFrontDistance();
 			getBackDistance();
