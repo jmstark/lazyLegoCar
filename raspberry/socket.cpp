@@ -73,7 +73,7 @@ namespace rasp_sock{
 			read = recv(c_socket, buffer, BUF_LEN, 0);
 			result += buffer;
 		}
-		if(read < 0){
+		if(read <= 0){
 			cleanup();
 			return "";
 		}
@@ -93,12 +93,12 @@ namespace rasp_sock{
 	void RaspberrySocket::cleanup(bool flag){
 		if(s_socket != 0 && flag){
 			close(s_socket);
-			s_socket = 0;
 		}
 		if(c_socket != 0){
 			close(c_socket);
-			c_socket = 0;
 			ZeroMemory(&client, sizeof(struct sockaddr_in));
 		}
+		s_socket = 0;
+		c_socket = 0;
 	}
 };

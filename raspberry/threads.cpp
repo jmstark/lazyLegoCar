@@ -12,7 +12,7 @@ reinitialize_sock:
 	sPtr->initSocket();
 wait_for_client:
 	sPtr->waitForClient();
-	o->controlYellowLed(true);
+	o->controlRedLed(true);
 	while(1){
 		if(sPtr->isConnected() == 0){
 			printf("client disconnected\n");
