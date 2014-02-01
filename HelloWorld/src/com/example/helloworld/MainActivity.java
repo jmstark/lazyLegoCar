@@ -36,35 +36,46 @@ public class MainActivity extends Activity {
     Button driveButton; 
     Button backButton;
     Button straightButton;
+    Button sendButton;
     Animation buttonEffect;
     Drawable d;
     public static final int ServerPort = 4359;
-    String ServerIP;
+    public static final String ServerIP = "10.0.0.1";
+    //public static final String ServerIP = "129.187.173.156";
+    //String ServerIP;
     Socket socket;
     PrintWriter printWriter;
     DataOutputStream DOS;
-    
+    String xWert;
+    String yWert;
+    EditText xInput;
+    EditText yInput;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        //AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        alert.setTitle("Type ServerIP! Port: " +ServerPort);
+        //alert.setTitle("Type ServerIP! Port: " +ServerPort);
 
         // Set an EditText view to get user input 
-        final EditText input = new EditText(this);
-        alert.setView(input);
+        //final EditText input = new EditText(this);
+        //alert.setView(input);
         
           
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int whichButton) {
-		          ServerIP = input.getText().toString();
+        //alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        //public void onClick(DialogInterface dialog, int whichButton) {
+		          //ServerIP = input.getText().toString();
 		          
 		          final TextView reading = (TextView) findViewById(R.id.reading);
 		          SeekBar seekBar = (SeekBar)findViewById(R.id.seekbar);
 		          seekBar.setMax(255);
+		          
+		          xInput = (EditText) findViewById(R.id.xvalue);
+		          yInput = (EditText) findViewById(R.id.yvalue);
+		          
 		          
 		          if (ServerIP != null)
 		          	reading.setText("ServerIP: "+ServerIP);      
@@ -98,11 +109,9 @@ public class MainActivity extends Activity {
 		  				   seekBar.setBackgroundColor(Color.RED);
 		  			   }else{
 		  				  seekBar.setBackgroundColor(Color.GREEN);
-		  				  //seekBar.setProgressDrawable(new ColorDrawable(Color.GREEN));
-		  				  //setProgressBarColor(seekBar, Color.GREEN);
 		  			   }
 		  			 
-			  			 printWriter.print(Integer.toString(progress));
+			  			 printWriter.print("Speed " + Integer.toString(progress));
 			  			 printWriter.flush();
 		  			   
 		  		   }
@@ -115,20 +124,11 @@ public class MainActivity extends Activity {
 		          	@Override
 		              public void onClick(View v){
 		          		mainButton.startAnimation(buttonEffect);
-		          		/*
-		          		try {
-							DOS.writeUTF("Exit");
-							socket.close();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}*/
 		          		printWriter.print("Exit");
 			  			printWriter.flush();
 			  			try {
 							socket.close();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 		                finish();
@@ -140,7 +140,23 @@ public class MainActivity extends Activity {
 		          rightButton = (Button) findViewById(R.id.button_right);
 		          driveButton = (Button) findViewById(R.id.button_forward);
 		          backButton = (Button) findViewById(R.id.button_backward);
+		          sendButton = (Button) findViewById(R.id.button_send);
+		          
+		          
 		          d = (Drawable) mainButton.getBackground();
+		          
+		          sendButton.setOnClickListener(new OnClickListener(){
+			  			@Override
+			  			public void onClick(View v){
+			  					sendButton.startAnimation(buttonEffect);
+			  					
+			  					xWert = xInput.getText().toString();
+			  					yWert = yInput.getText().toString();
+			  					String destination = "Destination " + (xWert.equals("") ? "0" : xWert) + " " +  (yWert.equals("") ? "0" : yWert);
+			  					printWriter.print(destination);
+					  			printWriter.flush();
+			  			}
+			  		  });
 		          
 		          leftButton.setOnClickListener(new OnClickListener(){
 		  			@Override
@@ -148,17 +164,10 @@ public class MainActivity extends Activity {
 		  					leftButton.setBackgroundColor(Color.CYAN);
 		  					rightButton.setBackgroundDrawable(d);
 		  					straightButton.setBackgroundDrawable(d);
-		  					/*
-		  					try {
-								DOS.writeUTF("Left");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							*/
+		  					
 		  					printWriter.print("Left");
 				  			printWriter.flush();
-		  								  				}
+		  			}
 		  		  });
 		          
 		          straightButton.setOnClickListener(new OnClickListener(){
@@ -167,13 +176,7 @@ public class MainActivity extends Activity {
 			  					straightButton.setBackgroundColor(Color.RED);
 			  					rightButton.setBackgroundDrawable(d);
 			  					leftButton.setBackgroundDrawable(d);
-			  					/*
-			  					try {
-									DOS.writeUTF("Straight");
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}*/
+			  					
 			  					printWriter.print("Straight");
 					  			printWriter.flush();		
 			  				}
@@ -186,13 +189,7 @@ public class MainActivity extends Activity {
 			  					rightButton.setBackgroundColor(Color.GREEN);
 			  					leftButton.setBackgroundDrawable(d);
 			  					straightButton.setBackgroundDrawable(d);
-			  					/*
-			  					try {
-									DOS.writeUTF("Right");
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}*/
+			  					
 			  					printWriter.print("Right");
 					  			printWriter.flush();
 			  				
@@ -205,13 +202,7 @@ public class MainActivity extends Activity {
 		  			public boolean onTouch(View v, MotionEvent event) {		  				
 		  				if(event.getAction() == MotionEvent.ACTION_DOWN) {
 		  					driveButton.setBackgroundColor(Color.BLUE);
-		  					/*
-		  					try {
-								DOS.writeUTF("Forwards");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
+		  					
 		  					printWriter.print("Forwards");
 				  			printWriter.flush();
 		  						
@@ -219,13 +210,7 @@ public class MainActivity extends Activity {
 		  				else if(event.getAction() == MotionEvent.ACTION_UP)
 		  				{
 		  					driveButton.setBackgroundDrawable(d);
-		  					/*
-		  					try {
-								DOS.writeUTF("Stop");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
+		  					
 		  					printWriter.print("Stop");
 				  			printWriter.flush();
 		  					
@@ -240,13 +225,7 @@ public class MainActivity extends Activity {
 		  			public boolean onTouch(View v, MotionEvent event) {
 		  				if(event.getAction() == MotionEvent.ACTION_DOWN){
 		  					backButton.setBackgroundColor(Color.YELLOW);
-		  					/*
-		  					try {
-								DOS.writeUTF("Backwards");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
+		  					
 		  					printWriter.print("Backwards");
 				  			printWriter.flush();
 		  					
@@ -254,13 +233,7 @@ public class MainActivity extends Activity {
 		  				else if(event.getAction() == MotionEvent.ACTION_UP)
 		  				{
 		  					backButton.setBackgroundDrawable(d);
-		  					/*
-		  					try {
-								DOS.writeUTF("Stop");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
+		  					
 		  					printWriter.print("Stop");
 				  			printWriter.flush();
 		  					
@@ -275,9 +248,10 @@ public class MainActivity extends Activity {
 	          } catch (IOException e) {    
 	  	        e.printStackTrace();
 	          }
-          }
-        });
-
+          //}
+        //});
+        
+        /*
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
             // Canceled.
@@ -287,7 +261,7 @@ public class MainActivity extends Activity {
         });
     
         alert.show();
-        
+        */
 	}
 	
 	public void setProgressBarColor(ProgressBar progressBar, int newColor){ 
