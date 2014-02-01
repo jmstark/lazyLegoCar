@@ -69,7 +69,7 @@ wait_for_client:
 		if(command.compare(COMMAND_DESTINATION) == 0){
 			sscanf(value.c_str(), "%d %d", &x, &y);
 #ifdef RASP_DEBUG
-			printf("received new destination: %d|%d", x, y);
+			printf("received new destination: %d|%d\n", x, y);
 #endif
 		}
 		else if(command.compare(COMMAND_SPEED) == 0){
