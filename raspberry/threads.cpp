@@ -63,8 +63,9 @@ wait_for_client:
 			cPtr->changed.store(true, std::memory_order_relaxed);
 		}
 		size_t blank = str.find_first_of(' ');
-		command = str.substr(0, blank-1);
+		command = str.substr(0, blank);
 		value = str.substr(blank+1, std::string::npos);
+		std::cout << "command: " << command << "\tvalue: " << value << std::endl;
 		if(command.compare(COMMAND_DESTINATION) == 0){
 			sscanf(value.c_str(), "%d %d", &x, &y);
 #ifdef RASP_DEBUG
