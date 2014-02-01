@@ -108,7 +108,7 @@ using namespace std;
 				incrementor=-incrementor;
 			
 
-			if(toArduino.changed.load(std::memory_order_relaxed)){
+			if(toArduino.changed.load()){
 #ifdef RASP_DEBUG
 				std::cout<<"nh"<<std::endl;
 #endif
