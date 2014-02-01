@@ -26,15 +26,18 @@ namespace rasp_sock{
 		}
 		this->s_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if(this->s_socket < 0){
+			printf("s_sock:(%d) %s\n", errno, strerror(errno));
 			s_socket = 0;
 			return false;
 		}
 		if(bind(this->s_socket, (struct sockaddr*)&server, sizeof(struct sockaddr_in)) < 0){
+			printf("s_sock:(%d) %s\n", errno, strerror(errno));
 			close(this->s_socket);
 			this->s_socket = 0;
 			return false;
 		}
 		if(listen(this->s_socket, 5) < 0){
+			printf("s_sock:(%d) %s\n", errno, strerror(errno));
 			close(this->s_socket);
 			this->s_socket = 0;
 			return false;
@@ -51,7 +54,7 @@ namespace rasp_sock{
 		this->c_socket = accept(s_socket, (struct sockaddr*)&client, &length);
 		if(c_socket < 0){
 			c_socket = -1;
-			printf("(%d) %s\n", errno, strerror(errno));
+			printf("c_sock:(%d) %s\n", errno, strerror(errno));
 			return false;
 		}
 		else
