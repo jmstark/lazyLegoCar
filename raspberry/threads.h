@@ -8,5 +8,5 @@
 #include "pathfinding.h"
 
 void socketThreadEntry(rasp_sock::RaspberrySocket*, comSync*, Observer*);
-void pathFindingThread(Observer*, int, int);
+void pathFindingThread(Observer*);
 #endif
