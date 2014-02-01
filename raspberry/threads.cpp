@@ -14,7 +14,7 @@ wait_for_client:
 	sPtr->waitForClient();
 	o->controlYellowLed(true);
 	while(1){
-		if(!sPtr->isConnected()){
+		if(sPtr->isConnected() == 0){
 			printf("client disconnected\n");
 			goto reinitialize_sock;
 		}
