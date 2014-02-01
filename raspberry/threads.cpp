@@ -7,9 +7,15 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 		fprintf(stderr, "invalid sock-thread args\n");
 		return;
 	}
+	goto wait_for_client;
+reinitialize_sock:
+	sPtr->initSocket();
+wait_for_client:
 	sPtr->waitForClient();
 	o->controlYellowLed(true);
 	while(1){
+		if(!sPtr->isConnected())
+			goto reinitialize_sock;
 		str = sPtr->receive();
 		std::cout<<str<<std::endl;
 		if(str.compare(COMMAND_FWD) == 0){

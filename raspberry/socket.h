@@ -19,6 +19,7 @@ namespace rasp_sock{
 			std::string receive();
 			int sendMsg(const std::string&);
 			void cleanup(bool flag = false);
+			int isConnected(){return c_socket;}
 			
 		private:
 			int s_socket, c_socket;
