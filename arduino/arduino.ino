@@ -1,3 +1,4 @@
+#include "pitches.h"
 #include <Servo.h>
 #include <SharpIR.h>
 
@@ -23,7 +24,20 @@
 #define YELLOW_LED 3
 #define RED_LED 2
 
+int melodyPower[]={NOTE_C5,0,NOTE_C5};
+int durationsPower[]={8,8,8};
 
+int melodyConnect[]={NOTE_C4,0,NOTE_C5};
+int durationsConnect[]={8,8,8};
+
+int melodyDisconnect[]={NOTE_C5,0,NOTE_C4};
+int durationsDisconnect[]={8,8,8};
+
+int melodyPathStart[]={NOTE_C5,NOTE_E5, NOTE_G5};
+int durationsPathStart[]={4,4,4};
+
+int melodyPathEnd[]={NOTE_C6,0,NOTE_C6};
+int durationsPathEnd[]={8,8,2}; 
 
 
 
@@ -53,6 +67,7 @@ void setup()                    // run once, when the sketch starts
   digitalWrite(SPEED_MOTOR_A, HIGH); 
   backServo.write(90);
   frontServo.write(90);
+  playMelody(melodyPower,durationsPower,sizeof(melodyPower));
 }
 
 
@@ -97,21 +112,26 @@ void loop()
       Serial.write(backIR.getData());
       break;
     case CMD_RED_LED_ON:
-      digitalWrite(RED_LED,HIGH);      
+      digitalWrite(RED_LED,HIGH);    
+      playMelody(melodyPathStart,durationsPathStart,sizeof(melodyPathStart));  
       break;
     case CMD_RED_LED_OFF:
       digitalWrite(RED_LED,LOW);      
+      playMelody(melodyPathEnd,durationsPathEnd,sizeof(melodyPathEnd));  
       break;
     case CMD_YELLOW_LED_ON:
       digitalWrite(YELLOW_LED,HIGH);      
+      playMelody(melodyConnect,durationsConnect,sizeof(melodyConnect));  
       break;
     case CMD_YELLOW_LED_OFF:
       digitalWrite(YELLOW_LED,LOW);      
+      playMelody(melodyConnect,durationsDisconnect,sizeof(melodyDisconnect));  
       break;
     default:
       break;
   }
-}
+}  
+
 
 
 //set the driving direction. possible values: DIR_STOP, DIR_FWD, DIR_RWD
@@ -150,6 +170,27 @@ void steer(byte dir){
    default: break;
    } 
 }
+
+
+void playMelody(int* melody, int* durations, int size) {
+  // iterate over the notes of the melody:
+  for (int thisNote = 0; thisNote < size; thisNote++) {
+
+    // to calculate the note duration, take one second 
+    // divided by the note type.
+    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+    int noteDuration = 1000/durations[thisNote];
+    tone(BEEP, melody[thisNote],noteDuration);
+
+    // to distinguish the notes, set a minimum time between them.
+    // the note's duration + 30% seems to work well:
+    int pauseBetweenNotes = noteDuration * 1.30;
+    delay(pauseBetweenNotes);
+    // stop the tone playing:
+    noTone(BEEP);
+  }
+}
+
 
 //blocks until serial data is available and then returns the next byte.
 uint8_t getNextByte()

@@ -24,6 +24,10 @@ const uint8_t CMD_RED_LED_ON=10;
 const uint8_t CMD_RED_LED_OFF=11;
 const uint8_t CMD_YELLOW_LED_ON=12;
 const uint8_t CMD_YELLOW_LED_OFF=13;
+const uint8_t CMD_MELODY_CONNECT=14;
+const uint8_t CMD_MELODY_DISCONNECT=15;
+const uint8_t CMD_PATH_START=16;
+const uint8_t CMD_PATH_END=17;
 
 
 
