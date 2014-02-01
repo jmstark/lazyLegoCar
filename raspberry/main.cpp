@@ -13,8 +13,8 @@ int main()
 	Observer o(&s,&p);
 	std::thread t1(socketThreadEntry,&s,&o.toArduino, &o);
 	//std::thread t2(pathFindingThread, &o);
-	//o.run();
-	sleep(10000);
+	o.run();
+	//sleep(10000);
 	/*sleep(2);
 	p.usbFlush();
 	sleep(2);

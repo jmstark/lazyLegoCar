@@ -3,6 +3,7 @@
 void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer* o){
 	std::string str, command, value;
 	int x,y;
+	//std::thread *t;
 	if(sPtr == NULL || cPtr == NULL){
 		fprintf(stderr, "invalid sock-thread args\n");
 		return;
@@ -70,7 +71,7 @@ wait_for_client:
 			sscanf(value.c_str(), "%d %d", &x, &y);
 #ifdef RASP_DEBUG
 			printf("received new destination: %d|%d\n", x, y);
-			std::thread(pathFindingThread, o, x, y);
+			std::thread t(pathFindingThread, o, x, y);
 #endif
 		}
 		else if(command.compare(COMMAND_SPEED) == 0){
