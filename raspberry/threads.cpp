@@ -72,7 +72,10 @@ wait_for_client:
 			sscanf(value.c_str(), "%d %d", &x, &y);
 #ifdef RASP_DEBUG
 			printf("received new destination: %d|%d\n", x, y);
-			std::thread t(pathFindingThread, o, x, y);
+			//std::thread t(pathFindingThread, o, x, y);
+			o->toArduino.x = x;
+			o->toArduino.y = y;
+			o->toArduino.pathFinding = true;
 #endif
 		}
 		else if(command.compare(COMMAND_SPEED) == 0){
