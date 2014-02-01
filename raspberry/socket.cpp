@@ -51,7 +51,7 @@ namespace rasp_sock{
 		this->c_socket = accept(s_socket, (struct sockaddr*)&client, &length);
 		if(c_socket < 0){
 			c_socket = -1;
-			printf("%d\n", c_socket);
+			printf("(%d) %s\n", errno, strerror(errno));
 			return false;
 		}
 		else
