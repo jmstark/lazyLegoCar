@@ -16,17 +16,17 @@ using namespace std;
 	void Observer::controlYellowLed(bool on)
 	{
 #ifdef RASP_DEBUG
-		printf("Yellow LED");
+		printf("Yellow LED\n");
 #endif
-		pipe->usbWrite(on?(void*)CMD_YELLOW_LED_ON:(void*)CMD_YELLOW_LED_OFF,sizeof(uint8_t));
+		pipe->usbWrite(on?(void*)&CMD_YELLOW_LED_ON:(void*)&CMD_YELLOW_LED_OFF,sizeof(uint8_t));
 	}
 
         void Observer::controlRedLed(bool on)
         {
 #ifdef RASP_DEBUG
-                printf("Red LED");
+                printf("Red LED\n");
 #endif
-                pipe->usbWrite(on?(void*)CMD_RED_LED_ON:(void*)CMD_RED_LED_OFF,sizeof(uint8_t));
+                pipe->usbWrite((on?((void*)&CMD_RED_LED_ON):((void*)&CMD_RED_LED_OFF)),sizeof(uint8_t));
         }
 
 
