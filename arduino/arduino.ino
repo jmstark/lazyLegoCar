@@ -67,7 +67,7 @@ void setup()                    // run once, when the sketch starts
   digitalWrite(SPEED_MOTOR_A, HIGH); 
   backServo.write(90);
   frontServo.write(90);
-  playMelody(melodyPower,durationsPower,sizeof(melodyPower));
+  //playMelody(melodyPower,durationsPower,sizeof(melodyPower));
 }
 
 
@@ -113,19 +113,19 @@ void loop()
       break;
     case CMD_RED_LED_ON:
       digitalWrite(RED_LED,HIGH);    
-      playMelody(melodyPathStart,durationsPathStart,sizeof(melodyPathStart));  
+      //playMelody(melodyPathStart,durationsPathStart,sizeof(melodyPathStart));  
       break;
     case CMD_RED_LED_OFF:
       digitalWrite(RED_LED,LOW);      
-      playMelody(melodyPathEnd,durationsPathEnd,sizeof(melodyPathEnd));  
+      //playMelody(melodyPathEnd,durationsPathEnd,sizeof(melodyPathEnd));  
       break;
     case CMD_YELLOW_LED_ON:
       digitalWrite(YELLOW_LED,HIGH);      
-      playMelody(melodyConnect,durationsConnect,sizeof(melodyConnect));  
+      //playMelody(melodyConnect,durationsConnect,sizeof(melodyConnect));  
       break;
     case CMD_YELLOW_LED_OFF:
       digitalWrite(YELLOW_LED,LOW);      
-      playMelody(melodyConnect,durationsDisconnect,sizeof(melodyDisconnect));  
+      //playMelody(melodyConnect,durationsDisconnect,sizeof(melodyDisconnect));  
       break;
     default:
       break;
