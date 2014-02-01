@@ -3,7 +3,7 @@
 namespace rasp_sock{
 	RaspberrySocket::RaspberrySocket(){
 		this->s_socket = 0;
-		this->c_socket = 0;
+		this->c_socket = -1;
 		ZeroMemory(&server, sizeof(struct sockaddr_in));
 		ZeroMemory(&client, sizeof(struct sockaddr_in));
 		server.sin_family = AF_INET;
@@ -50,7 +50,7 @@ namespace rasp_sock{
 		length = sizeof(struct sockaddr_in);
 		this->c_socket = accept(s_socket, (struct sockaddr*)&client, &length);
 		if(c_socket < 0){
-			c_socket = 0;
+			c_socket = -1;
 			return false;
 		}
 		else
