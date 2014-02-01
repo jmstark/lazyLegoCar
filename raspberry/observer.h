@@ -3,7 +3,6 @@
 #define OBSERVER
 
 #include "communication.h"
-#include "threads.h"
 
 	class Observer{
 		public:
