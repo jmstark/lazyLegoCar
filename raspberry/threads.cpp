@@ -14,8 +14,10 @@ wait_for_client:
 	sPtr->waitForClient();
 	o->controlYellowLed(true);
 	while(1){
-		if(!sPtr->isConnected())
+		if(!sPtr->isConnected()){
+			printf("client disconnected\n");
 			goto reinitialize_sock;
+		}
 		str = sPtr->receive();
 		std::cout<<str<<std::endl;
 		if(str.compare(COMMAND_FWD) == 0){
