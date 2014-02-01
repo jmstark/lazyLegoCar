@@ -47,6 +47,9 @@ using namespace std;
 		printf("steering to: %d\n", direction);
 #endif
 		pipe->usbWrite((void*)&direction,sizeof(direction));
+
+		uint8_t mult = (direction==LEFT)?(-1):((direction==RIGHT)?0:1);
+		moveFrontLaser(90-30*mult);
 	}
 
 	void Observer::moveFrontLaser(uint8_t degrees)
