@@ -34,6 +34,8 @@ typedef com *comPtr;
 
 typedef struct communicationSync{
 	com comc;
+	int x, y;
+	bool pathFinding;
 	std::atomic<bool> changed;
 /*
 use block to prevent the update threads from writing 

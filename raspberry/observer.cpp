@@ -6,6 +6,9 @@ using namespace std;
 	Observer::Observer(rasp_sock::RaspberrySocket *sock,USBPipe *pipe){
 		this->sock = sock;
 		this->pipe = pipe;
+		toArduino.x = 0;
+		toArduino.y = 0;
+		toArduino.pathFinding = false;
 	}
 	
 	
@@ -114,6 +117,9 @@ using namespace std;
 				if(toArduino.comc.steering == 1)
 					steer(RIGHT);
 				toArduino.mtx.unlock();
+			}
+			if(toArduino.pathFinding){
+				std::thread t(pathFindingThread, this, toArduino.x, toArduino.y);
 			}
 			getFrontDistance();
 			getBackDistance();
