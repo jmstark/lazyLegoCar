@@ -185,18 +185,30 @@ void Path::parallelToObstacle(){
 }
 
 void Path::driveCar(uint8_t drv){
-	data->mtx.lock();
+	if(drv == -1)
+		obs->drive(DIR_RWD);
+	else if(drv == 0)
+		obs->drive(DIR_STOP);
+	else if(drv == 1)
+		obs->drive(DIR_FWD);
+	/*data->mtx.lock();
 	data->changed.exchange(true);
 	data->comc.direction = drv;
-	data->mtx.unlock();
+	data->mtx.unlock();*/
 }
 
 
 void Path::setDirection(uint8_t dir){
-	data->mtx.lock();
+	if(dir == -1)
+		obs->steer(LEFT);
+	else if(dir == 0)
+		obs->steer(STRAIGHT);
+	else if(dir == 1)
+		obs->steer(RIGHT);
+	/*data->mtx.lock();
 	data->changed.store(true);
 	data->comc.steering = dir;
-	data->mtx.unlock();
+	data->mtx.unlock();*/
 }
 void Path::computeMiddle()
 {

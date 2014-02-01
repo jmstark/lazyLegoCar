@@ -103,12 +103,12 @@ using namespace std;
 	void Observer::run(){
 		std::string str;
 		while(1){
-
+			
 			usleep(150*1000);
 			angle+=incrementor*10;
-			if(angle>=180 || angle <= 0)
+			if(angle>=160 || angle <= 20)
 				incrementor=-incrementor;
-			
+			moveBackLaser(angle);
 
 			if(toArduino.changed.load()){
 #ifdef RASP_DEBUG
