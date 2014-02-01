@@ -48,7 +48,7 @@ using namespace std;
 #endif
 		pipe->usbWrite((void*)&direction,sizeof(direction));
 
-		uint8_t mult = (direction==LEFT)?(-1):((direction==RIGHT)?0:1);
+		uint8_t mult = (direction==LEFT)?(-1):((direction==RIGHT)?1:0);
 		moveFrontLaser(90-30*mult);
 	}
 
