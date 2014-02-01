@@ -70,6 +70,7 @@ wait_for_client:
 			sscanf(value.c_str(), "%d %d", &x, &y);
 #ifdef RASP_DEBUG
 			printf("received new destination: %d|%d\n", x, y);
+			std::thread(pathFindingThread, o, x, y);
 #endif
 		}
 		else if(command.compare(COMMAND_SPEED) == 0){
@@ -91,7 +92,8 @@ wait_for_client:
 }
 
 
-void pathFindingThread(Observer *obs){
-	Path path(100,100,&obs->toArduino, obs);
+void pathFindingThread(Observer *obs, int x, int y){
+	printf("path-finding-thread startet\n\tdriving to (%d,%d)\n", x, y);
+	Path path(x,y,&obs->toArduino, obs);
 	path.drive();
 }
