@@ -9,6 +9,8 @@ using namespace std;
 		toArduino.x = 0;
 		toArduino.y = 0;
 		toArduino.pathFinding = false;
+		angle = 90;
+		incrementor = 1;
 	}
 	
 	
