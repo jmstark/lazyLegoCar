@@ -76,6 +76,7 @@ wait_for_client:
 			cPtr->comc.speed = std::stoi(value);
 			cPtr->mtx.unlock();
 			cPtr->changed.store(true, std::memory_order_relaxed);
+			printf("received new Speed: %d\n", std::stoi(value));
 		}
 		/* old speed-setting
 		else if(1==0){
