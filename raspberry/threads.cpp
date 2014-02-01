@@ -12,9 +12,9 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 //reinitialize_sock:
 //	sPtr->initSocket();
 wait_for_client:
-        o->controlRedLed(false);
+    o->controlYellowLed(false);
 	sPtr->waitForClient();
-	o->controlRedLed(true);
+	o->controlYellowLed(true);
 	while(1){
 		if(sPtr->isConnected() == 0){
 			printf("client disconnected\n");
@@ -102,9 +102,11 @@ pf_loop:
 	while(obs->toArduino.pathFinding == false){
 		sleep(5);
 	}
+	obs->controlRedLed(true);
 	printf("path-finding-thread startet\n\tdriving to (%d,%d)\n", obs->toArduino.x, obs->toArduino.y);
 	Path path(obs->toArduino.x,obs->toArduino.y,&obs->toArduino, obs);
 	path.drive();
 	obs->toArduino.pathFinding = false;
+	obs->controlRedLed(false);
 	goto pf_loop;
 }
