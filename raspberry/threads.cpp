@@ -3,20 +3,22 @@
 void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer* o){
 	std::string str, command, value;
 	int x,y;
+	//std::thread *t;
 	if(sPtr == NULL || cPtr == NULL){
 		fprintf(stderr, "invalid sock-thread args\n");
 		return;
 	}
-	goto wait_for_client;
-reinitialize_sock:
-	sPtr->initSocket();
+	
+//reinitialize_sock:
+//	sPtr->initSocket();
 wait_for_client:
+        o->controlRedLed(false);
 	sPtr->waitForClient();
 	o->controlRedLed(true);
 	while(1){
 		if(sPtr->isConnected() == 0){
 			printf("client disconnected\n");
-			goto reinitialize_sock;
+			goto wait_for_client;
 		}
 		str = sPtr->receive();
 		std::cout<<str<<std::endl;
@@ -70,7 +72,10 @@ wait_for_client:
 			sscanf(value.c_str(), "%d %d", &x, &y);
 #ifdef RASP_DEBUG
 			printf("received new destination: %d|%d\n", x, y);
-			std::thread(pathFindingThread, o, x, y);
+			//std::thread t(pathFindingThread, o, x, y);
+			o->toArduino.x = x;
+			o->toArduino.y = y;
+			o->toArduino.pathFinding = true;
 #endif
 		}
 		else if(command.compare(COMMAND_SPEED) == 0){
@@ -92,8 +97,14 @@ wait_for_client:
 }
 
 
-void pathFindingThread(Observer *obs, int x, int y){
-	printf("path-finding-thread startet\n\tdriving to (%d,%d)\n", x, y);
-	Path path(x,y,&obs->toArduino, obs);
+void pathFindingThread(Observer *obs){
+pf_loop:
+	while(obs->toArduino.pathFinding == false){
+		sleep(5);
+	}
+	obs->toArduino.pathFinding = false;
+	printf("path-finding-thread startet\n\tdriving to (%d,%d)\n", obs->toArduino.x, obs->toArduino.y);
+	Path path(obs->toArduino.x,obs->toArduino.y,&obs->toArduino, obs);
 	path.drive();
+	goto pf_loop;
 }

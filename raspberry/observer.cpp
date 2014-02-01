@@ -6,6 +6,11 @@ using namespace std;
 	Observer::Observer(rasp_sock::RaspberrySocket *sock,USBPipe *pipe){
 		this->sock = sock;
 		this->pipe = pipe;
+		toArduino.x = 0;
+		toArduino.y = 0;
+		toArduino.pathFinding = false;
+		angle = 90;
+		incrementor = 1;
 	}
 	
 	
@@ -44,6 +49,9 @@ using namespace std;
 		printf("steering to: %d\n", direction);
 #endif
 		pipe->usbWrite((void*)&direction,sizeof(direction));
+
+		uint8_t mult = (direction==LEFT)?(-1):((direction==RIGHT)?1:0);
+		moveFrontLaser(90-30*mult);
 	}
 
 	void Observer::moveFrontLaser(uint8_t degrees)
@@ -95,7 +103,14 @@ using namespace std;
 	void Observer::run(){
 		std::string str;
 		while(1){
-			if(toArduino.changed.load(std::memory_order_relaxed)){
+
+			usleep(150*1000);
+			angle+=incrementor*10;
+			if(angle>=180 || angle <= 0)
+				incrementor=-incrementor;
+			
+
+			if(toArduino.changed.load()){
 #ifdef RASP_DEBUG
 				std::cout<<"nh"<<std::endl;
 #endif

@@ -4,7 +4,6 @@
 
 #include "communication.h"
 
-
 	class Observer{
 		public:
 			Observer(rasp_sock::RaspberrySocket *sock = NULL, USBPipe *pipe = NULL);
@@ -22,6 +21,8 @@
 			uint8_t getBackDistance();
 			
 		private:
+			int16_t angle;
+			int8_t incrementor;
 			rasp_sock::RaspberrySocket *sock;
 			USBPipe *pipe;
 
