@@ -106,11 +106,12 @@ using namespace std;
 		while(1){
 			
 			usleep(150*1000);
-			if(toArduino.pathFinding){
+			//if(toArduino.pathFinding){
+				printf("laser\n");
 				angle+=incrementor*10;
 				if(angle>=160 || angle <= 20)
 					incrementor=-incrementor;
 				moveBackLaser(angle);
-			}
+			//}
 		}
 	}
