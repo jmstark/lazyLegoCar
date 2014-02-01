@@ -30,20 +30,79 @@
         android:layout_centerHorizontal="true" />
     
     <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_size"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/Destination" />
+    
+    <EditText
+	    android:id="@+id/xvalue"
+	    android:layout_width="50dp"
+	    android:layout_height="40dp"
+	    android:layout_marginTop="135dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="70dp"
+        android:inputType="numberDecimal|numberSigned"/>
+    
+    <EditText
+	    android:id="@+id/yvalue"
+	    android:layout_width="50dp"
+	    android:layout_height="40dp"
+	    android:layout_marginTop="135dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="185dp"
+	    android:inputType="numberDecimal|numberSigned"/>
+    
+    <TextView
+        android:id="@+id/xValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:text="@string/xValue" />
+    
+    <TextView
+        android:id="@+id/yValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="135dp"
+        android:text="@string/yValue" />
+    
+    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/font_size"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="185dp"
         android:layout_centerHorizontal="true"
         android:text="@string/LazyLegocar_Control" />
+    
+    <Button
+        android:id="@+id/button_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="135dp"
+        android:text="@string/Send" />
 
     <Button
         android:id="@+id/button_forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="220dp"
         android:text="@string/Forwards" />
     
     <Button
@@ -51,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="295dp"
+        android:layout_marginTop="350dp"
         android:text="@string/Backwards" />
     
     <Button
@@ -60,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="285dp"
         android:text="@string/Right" />
 	
     <Button
@@ -68,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="285dp"
         android:text="@string/Straight" />
     
     <Button
@@ -76,7 +135,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="285dp"
         android:text="@string/Left" />
 
     
@@ -85,7 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="430dp"
         android:text="@string/Exit" />
 
 

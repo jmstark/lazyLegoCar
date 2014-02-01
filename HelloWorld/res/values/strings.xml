@@ -6,7 +6,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="OK">OK</string>
     <string name="LazyLegocar_Control"><b>Remote Control</b></string>
+    <string name="Destination"><b>Destination</b></string>
     <string name="Exit">Quit App!</string>
+    <string name="Send">Send</string>
+    <string name="xValue">x-Value</string>
+    <string name="yValue">y-Value</string>
     <string name="Left">Turn Left</string>
     <string name="Right">Turn Right</string>
     <string name="Backwards">Backwards</string>

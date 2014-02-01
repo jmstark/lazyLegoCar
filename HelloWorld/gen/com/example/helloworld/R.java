@@ -35,18 +35,24 @@ public final class R {
         public static final int progressshape=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a000b;
-        public static final int button_backward=0x7f0a0005;
-        public static final int button_forward=0x7f0a0004;
-        public static final int button_left=0x7f0a0008;
-        public static final int button_main=0x7f0a0009;
-        public static final int button_right=0x7f0a0006;
-        public static final int button_straight=0x7f0a0007;
-        public static final int progressshape=0x7f0a000a;
+        public static final int action_settings=0x7f0a0011;
+        public static final int button_backward=0x7f0a000b;
+        public static final int button_forward=0x7f0a000a;
+        public static final int button_left=0x7f0a000e;
+        public static final int button_main=0x7f0a000f;
+        public static final int button_right=0x7f0a000c;
+        public static final int button_send=0x7f0a0009;
+        public static final int button_straight=0x7f0a000d;
+        public static final int progressshape=0x7f0a0010;
         public static final int reading=0x7f0a0002;
         public static final int seekbar=0x7f0a0001;
-        public static final int textView1=0x7f0a0003;
+        public static final int textView1=0x7f0a0008;
         public static final int textView2=0x7f0a0000;
+        public static final int textView3=0x7f0a0003;
+        public static final int xValue=0x7f0a0006;
+        public static final int xvalue=0x7f0a0004;
+        public static final int yValue=0x7f0a0007;
+        public static final int yvalue=0x7f0a0005;
     }
     public static final class layout {
         public static final int activity_left_click=0x7f030000;
@@ -57,19 +63,23 @@ public final class R {
         public static final int main=0x7f090001;
     }
     public static final class string {
-        public static final int Backwards=0x7f060008;
-        public static final int Exit=0x7f060005;
-        public static final int Forwards=0x7f060009;
+        public static final int Backwards=0x7f06000c;
+        public static final int Destination=0x7f060005;
+        public static final int Exit=0x7f060006;
+        public static final int Forwards=0x7f06000d;
         public static final int LazyLegocar_Control=0x7f060004;
-        public static final int Left=0x7f060006;
+        public static final int Left=0x7f06000a;
         public static final int OK=0x7f060003;
-        public static final int Right=0x7f060007;
-        public static final int SpeedSetting=0x7f06000b;
-        public static final int Straight=0x7f06000a;
+        public static final int Right=0x7f06000b;
+        public static final int Send=0x7f060007;
+        public static final int SpeedSetting=0x7f06000f;
+        public static final int Straight=0x7f06000e;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060002;
-        public static final int title_activity_left_click=0x7f06000c;
+        public static final int title_activity_left_click=0x7f060010;
+        public static final int xValue=0x7f060008;
+        public static final int yValue=0x7f060009;
     }
     public static final class style {
         /** 

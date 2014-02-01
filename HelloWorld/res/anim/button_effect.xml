@@ -3,11 +3,11 @@
     <alpha 
         android:fromAlpha="1.0"
         android:toAlpha="0.5"
-        android:duration="300"/>
+        android:duration="150"/>
 	<alpha 
         android:fromAlpha="0.5"
         android:toAlpha="1.0"
-        android:duration="300"
-        android:startOffset="300"
-        android:repeatCount="5"/>
+        android:duration="150"
+        android:startOffset="150"
+        android:repeatCount="2"/>
 </set>
