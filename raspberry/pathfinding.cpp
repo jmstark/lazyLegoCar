@@ -252,10 +252,12 @@ void Path::drive(){
 		printf("driving %ld ms in direction %hhd\nsetting direction\n", d->t,d->drv_info);
 #endif
 		setDirection(d->drv_info);
+/*
 #ifdef RASP_DEBUG
 		printf("waiting for 2s\n");
 #endif
 		sleep(2);
+*/
 #ifdef RASP_DEBUG
 		printf("start driving\n");
 		//printf("Start: P(%g|%g)\n", pos.x, pos.y);
@@ -279,7 +281,7 @@ void Path::drive(){
 #ifdef RASP_DEBUG
 		printf("new position: P(%g|%g)\n", pos.x, pos.y);
 #endif
-		sleep(1);
+		//sleep(1);
 	}
 #ifdef RASP_DEBUG
 		printf("reached destination, stopping vehicle\n");
