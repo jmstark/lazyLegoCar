@@ -21,6 +21,8 @@
 			uint8_t getBackDistance();
 			
 		private:
+			int16_t angle=90;
+			int8_t incrementor=1;
 			rasp_sock::RaspberrySocket *sock;
 			USBPipe *pipe;
 
