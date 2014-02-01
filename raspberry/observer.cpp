@@ -118,10 +118,6 @@ using namespace std;
 					steer(RIGHT);
 				toArduino.mtx.unlock();
 			}
-			if(toArduino.pathFinding){
-				std::thread t(pathFindingThread, this, toArduino.x, toArduino.y);
-				toArduino.pathFinding = false;
-			}
 			getFrontDistance();
 			getBackDistance();
 			/*if(fromArduino.changed.load(std::memory_order_relaxed)){

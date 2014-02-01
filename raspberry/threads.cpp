@@ -98,7 +98,13 @@ wait_for_client:
 
 
 void pathFindingThread(Observer *obs, int x, int y){
+pf_loop:
+	while(obs->toArduino.pathFinding == false){
+		sleep(5);
+	}
+	obs->toArduino.pathFinding = false;
 	printf("path-finding-thread startet\n\tdriving to (%d,%d)\n", x, y);
 	Path path(x,y,&obs->toArduino, obs);
 	path.drive();
+	goto pf_loop;
 }
