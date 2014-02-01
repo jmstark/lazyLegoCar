@@ -8,16 +8,17 @@ void socketThreadEntry(rasp_sock::RaspberrySocket *sPtr, comSync *cPtr, Observer
 		fprintf(stderr, "invalid sock-thread args\n");
 		return;
 	}
-	goto wait_for_client;
-reinitialize_sock:
-	sPtr->initSocket();
+	
+//reinitialize_sock:
+//	sPtr->initSocket();
 wait_for_client:
+        o->controlRedLed(false);
 	sPtr->waitForClient();
 	o->controlRedLed(true);
 	while(1){
 		if(sPtr->isConnected() == 0){
 			printf("client disconnected\n");
-			goto reinitialize_sock;
+			goto wait_for_client;
 		}
 		str = sPtr->receive();
 		std::cout<<str<<std::endl;
