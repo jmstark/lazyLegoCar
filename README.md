@@ -4,7 +4,7 @@ lazyLegoCar
 Lego car with basic collision avoidance/ path planning
 
 
-setup:
+Setup:
 ===========
 
 Starting the car:
@@ -32,7 +32,7 @@ It is recommended to do is on a Linux PC.
 
 Clone the repository:
 git clone github.com/jmstark/lazyLegoCar
-
+ 
 Compiling code for arduino:
 Load arduino/arduino.ino into the Arduino IDE. Compile and upload the code to the arduino.
 
