@@ -37,13 +37,13 @@ If everything is compiled and in place (as is the case after the final presentat
 
 Compiling from source:
 =================
-It is recommended to do is on a Linux PC.
+It is recommended to do this on a Linux PC.
 
 Clone the repository:
 git clone github.com/jmstark/lazyLegoCar
  
 Compiling code for arduino:
-The SharpIR-Library needs to be installed in the Arduino IDE. You can find it in the folder Library.
+The SharpIR-Library needs to be installed in the Arduino IDE. You can find it in the "Library"-folder.
 Load arduino/arduino.ino into the Arduino IDE. Compile and upload the code to the arduino.
 
 Compiling code for raspberry pi:
