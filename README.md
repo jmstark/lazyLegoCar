@@ -11,7 +11,7 @@ Starting the car:
 ===========
 
 Prerequisite:
-Install the App "HelloWorld" (should be renamed in the future) on your smartphone: The compiled app is located in the github repository. The relative path is HelloWorld/bin/HelloWorld.apk.
+Install the App "HelloWorld" (should be renamed in the future) on your smartphone: The compiled app is located in the github repository. The relative path is HelloWorld/bin/HelloWorld.apk. So either clone the git repository and pick the app from your file system, or go to https://github.com/jmstark/lazyLegoCar/blob/master/HelloWorld/bin/HelloWorld.apk and click "Raw", which downloads the app. Put the .apk-file on your smartphone and install it (Foreign app sources have to be enabled to allow this).
 On your smartphone, the app is named "LegoCarControl".
 
 If everything is compiled and in place (as is the case after the final presentation), to start the car you have to:
@@ -32,7 +32,7 @@ If everything is compiled and in place (as is the case after the final presentat
 
 	-Path planning: Enter x- and y- coordinates and send it to the car. A positive x-Value means, the destination lies x centimeters to the right of the car. A positive y-Value means, the destination lies y centimeters in front of the car. After you send the coordinates, the car starts driving towards the final destination without your intervention. 
 
-	NOTE: Since the car has no position sensors, all the calculations of the current position of the car rely on measurements and calibrations that have been done with full batteries. So if the car doesn't reach the exact destination, you can either use full batteries or change the constants which determine the speed.
+	NOTE: Since the car has no position sensors, all the calculations of the current position of the car rely on measurements and calibrations that have been done with full batteries. So if the car doesn't reach the exact destination, you can either use full batteries or change the constants in the sourcecode which determine the speed.
 
 
 Compiling from source:
@@ -43,11 +43,13 @@ Clone the repository:
 git clone github.com/jmstark/lazyLegoCar
  
 Compiling code for arduino:
+The SharpIR-Library needs to be installed in the Arduino IDE. You can find it in the folder Library.
 Load arduino/arduino.ino into the Arduino IDE. Compile and upload the code to the arduino.
 
 Compiling code for raspberry pi:
 Go into raspberry directory: cd raspberry.
 A makefile is already supplied, so a simple "make" command starts the building process. The application is named "lazyLegoCar".
+Either compile it on a Linux PC or on the raspberry itself. The program can be run on both, as long as there is a USB-connection from the desired platform to the Arduino board. A precompiled version + sourcecode is located on the raspberry under "~/lazyLegoCar/raspberry".
 
 Compiling the App:
 Import the project from the "HelloWorld" folder into eclipse (Android Development Tools and stuff has to be installed).
