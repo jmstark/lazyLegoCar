@@ -11,7 +11,7 @@ Starting the car:
 ===========
 
 Prerequisite:
-Install the App "HelloWorld" (should be renamed in the future) on your smartphone: The compiled app is located in the github repository. The relative path is HelloWorld/bin/HelloWorld.apk. So either clone the git repository and pick the app from your file system, or go to https://github.com/jmstark/lazyLegoCar/blob/master/HelloWorld/bin/HelloWorld.apk and click "Raw", which downloads the app. Put the .apk-file on your smartphone and install it (Foreign app sources have to be enabled to allow this).
+Install the App "HelloWorld" (should be renamed in the future) on your smartphone: The compiled app is located in the github repository. The relative path is HelloWorld/bin/HelloWorld.apk. So either clone the git repository and pick the app from your file system, or download it directly from https://github.com/jmstark/lazyLegoCar/raw/master/HelloWorld/bin/HelloWorld.apk . Put the .apk-file on your smartphone and install it (Foreign app sources have to be enabled to allow this).
 On your smartphone, the app is named "LegoCarControl".
 
 If everything is compiled and in place (as is the case after the final presentation), to start the car you have to:
